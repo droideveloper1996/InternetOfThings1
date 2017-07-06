@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group
+        android:id="@+id/topMenu"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_my_device"
+            android:title="My Devices"
+            app:showAsAction="never"
+            android:icon="@drawable/ic_important_devices_black_24px"
+            />
+        <item
+            android:id="@+id/action_iot"
+            android:title="Internet of Things"
+            android:icon="@drawable/ic_home_black_24px"
+            app:showAsAction="never"
+            />
+        <item
+            android:id="@+id/action_alarm"
+            android:title="Timer"
+            android:icon="@drawable/ic_access_alarms_black_24px"
+            app:showAsAction="never"
+            />
+
+        <item
+            android:id="@+id/action_location"
+            android:title="Location"
+            android:icon="@drawable/ic_location_on_black_24px"
+            app:showAsAction="never"
+            />
+
+        <item
+            android:id="@+id/action_addProduct"
+            android:title="Add more Product"
+            android:icon="@drawable/ic_add_black_24px"
+            app:showAsAction="never"/>
+    </group>
+
+
+    <item
+        android:id="@+id/action_reset"
+        android:title="Reset Device"
+        app:showAsAction="never"
+        />
+
+</menu>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <CheckBoxPreference
+        android:key="@string/locationKey"
+        android:summaryOff="@string/summaryOff"
+        android:summaryOn="@string/summaryOn"
+        android:title="@string/checkboxTitle"
+        android:checked="true"
+        />
+</PreferenceScreen>

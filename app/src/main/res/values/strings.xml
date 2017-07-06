@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">IoT!</string>
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Home Smart Home!</string>
+    <string name="slide_1_desc">The easiest way to manage devices Outdoor!</string>
+
+    <string name="slide_2_title">Save Energy</string>
+    <string name="slide_2_desc">Save Energy Save Money!</string>
+
+    <string name="slide_3_title">Go Green</string>
+    <string name="slide_3_desc">Eco Friendly and Love mother Earth!</string>
+
+    <string name="slide_4_title">Increase Productivity</string>
+    <string name="slide_4_desc">Increase Your Productive Power and Be Future ready!</string>
+
+    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
+    <string name="play_again">Scan Switch</string>
+
+
+    <string name="True">true</string>
+    <string name="False">false</string>
+
+
+    <string name="checkboxTitle">Location Services</string>
+    <string name="locationKey">location</string>
+    <string name="summaryOn">Enabled</string>
+    <string name="summaryOff">Disabled</string>
+
+
+</resources>
