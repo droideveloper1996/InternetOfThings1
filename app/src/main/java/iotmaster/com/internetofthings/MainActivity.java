@@ -225,16 +225,52 @@ public class MainActivity extends AppCompatActivity {
 
         if (resultCode == RESULT_OK && data != null) {
             ArrayList<String> strings = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            Log.i("ASDFGH", strings.get(0));
+          //  Log.i("ASDFGH", strings.get(0));
             for (String abc : strings) {
-
-                if (abc.toLowerCase().equals("turn off my lights")) {
+                    String word=abc.toLowerCase();
+                if (word.equals("turn off my lights")||
+                        word.equals("turn off my light")||
+                        word.equals("turn off")||
+                        word.equals("turn off lights")||
+                        word.equals("turn off light")||
+                        word.equals("switch off my lights")||
+                        word.equals("switch off my light")||
+                        word.equals("switch off")||
+                        word.equals("switch off light")||
+                        word.equals("turn off lights")||
+                        word.equals("off")||
+                        word.equals("close  my lights")||
+                        word.equals("close  my light")||
+                        word.equals("close lights")||
+                        word.equals("close light")||
+                        word.equals("close switch")) {
                     power_switch.setImageResource(R.drawable.ic_power);
                     Toast.makeText(mContext, "Off state", Toast.LENGTH_LONG).show();
                     NetworkUtils.getdata(MainActivity.this, "0");
                     break;
                 } else {
-                    if (abc.toLowerCase().equals("turn on my lights")) {
+                    if (word.equals("turn on my lights")
+                            ||word.equals("turn on my light")
+                            ||word.equals("turn on lights")
+                            ||word.equals("turn on lights")
+                            ||word.equals("on")
+                            ||word.equals("turn on")
+                            ||word.equals("turn on my lights")
+                            ||word.equals("switch on my light")
+                            ||word.equals("switch on lights")
+                            ||word.equals("switch on lights")
+                            ||word.equals("on")
+                            ||word.equals("switch on")
+                            ||word.equals("switch on my lights")
+                            ||word.equals("open  my lights")
+                            ||word.equals("open  my light")
+                            ||word.equals("open lights")
+                            ||word.equals("open light")
+                            ||word.equals("open switch")
+
+                            )
+
+                    {
                         power_switch.setImageResource(R.drawable.ic_power_button);
                         Toast.makeText(mContext, "On State", Toast.LENGTH_SHORT).show();
                         NetworkUtils.getdata(MainActivity.this, "1");
