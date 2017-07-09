@@ -1,0 +1,7 @@
+<resources>
+    <array name="timer_array">
+        <item>Hr</item>
+        <item>Min</item>
+        <item>Sec</item>
+    </array>
+</resources>

@@ -35,7 +35,7 @@ public class NetworkUtils {
     public static void getdata(final Context context, final String id) {
         if (id != null) {
             final PrefManager prefManager = new PrefManager(context);
-            String url = "http://wifiswitch.000webhostapp.com/changeState.php";
+            String url = "http://iotsswitch.atwebpages.com/changeState.php";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
@@ -68,7 +68,7 @@ public class NetworkUtils {
 
     public static void registerProduct(final Context context, final Map<String, String> stringMap) {
         if (stringMap != null) {
-            String url = "http://wifiswitch.000webhostapp.com/register.php";
+            String url = "http://iotsswitch.atwebpages.com/register.php";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
@@ -76,7 +76,7 @@ public class NetworkUtils {
                             PrefManager prefManager = new PrefManager(context);
                             prefManager.setUniqueKey(stringMap.get(SwitchRegisterActivity.UNIQUE_KEY));
                             Log.i("STORED UNIQUE KEY", prefManager.getKey());
-                            Log.i("response",response.toString());
+                            Log.i("response", response.toString());
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
                                 String result = jsonObject.optString("status");
@@ -122,7 +122,7 @@ public class NetworkUtils {
 
     public static void logMeIn(final Context context, final Map<String, String> stringMap) {
         if (stringMap != null) {
-            String url = "http://wifiswitch.000webhostapp.com/login.php";
+            String url = "http://iotsswitch.atwebpages.com/login.php";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
@@ -200,5 +200,57 @@ public class NetworkUtils {
 
 
         }
+    }
+
+    public static void getState(final String key, final Context context) {
+        if (key != null) {
+            String finalResult;
+            final PrefManager prefManager = new PrefManager(context);
+            String url = "http://iotsswitch.atwebpages.com/switchit.php";
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse( String response) {
+
+                            Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                String state = jsonObject.optString("status");
+                                Log.i("NetworkUtils GetState",state);
+                                if (state.equals("1")) {
+                                    Toast.makeText(context, "HiGH Response", Toast.LENGTH_LONG).show();
+
+                                } else if (state.equals("0")) {
+                                    Toast.makeText(context, "LOW Response", Toast.LENGTH_LONG).show();
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() {
+
+
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put(UNIQUE_KEY, key);
+
+                    return params;
+                }
+
+            };
+
+            RequestQueue requestQueue = Volley.newRequestQueue(context);
+            requestQueue.add(stringRequest);
+        }
+
     }
 }

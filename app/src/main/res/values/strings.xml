@@ -30,5 +30,7 @@
     <string name="summaryOn">Enabled</string>
     <string name="summaryOff">Disabled</string>
 
+    <string name="spinner_title">hr</string>
+
 
 </resources>

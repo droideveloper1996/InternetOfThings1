@@ -47,10 +47,25 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout linearLayout;
     NetworkUtils network;
 
+    public static final String SAVED_STATE_KEY = "saved-state";
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        power_switch = (ImageView) findViewById(R.id.power_switch);
+
+        if (savedInstanceState != null) {
+            Boolean state = savedInstanceState.getBoolean(SAVED_STATE_KEY);
+            if (state) {
+                power_switch.setImageResource(R.drawable.ic_power_button);
+                isSwitched = true;
+
+            } else {
+                power_switch.setImageResource(R.drawable.ic_power);
+                isSwitched = false;
+            }
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         setSupportActionBar(toolbar);
@@ -63,17 +78,13 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.True, R.string.False);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
-        power_switch = (ImageView) findViewById(R.id.power_switch);
         network = new NetworkUtils(this);
 
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
-        } else {
-            Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_LONG).show();
         }
-
         findViewById(R.id.btn_play_again).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,17 +120,16 @@ public class MainActivity extends AppCompatActivity {
                 if (!isSwitched) {
 
                     power_switch.setImageResource(R.drawable.ic_power_button);
-
-                    Toast.makeText(mContext, "Switch On", Toast.LENGTH_LONG).show();
                     isSwitched = true;
                     NetworkUtils.getdata(MainActivity.this, "1");
+
 
                 } else {
 
                     power_switch.setImageResource(R.drawable.ic_power);
-                    Toast.makeText(mContext, "Switch Off", Toast.LENGTH_LONG).show();
                     isSwitched = false;
                     NetworkUtils.getdata(MainActivity.this, "0");
+
                 }
 
             }
@@ -149,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.action_alarm:
 
-                        startActivity(new Intent(MainActivity.this,AlarmActivity.class));
+                        startActivity(new Intent(MainActivity.this, AlarmActivity.class));
 
                 }
                 mDrawerLayout.closeDrawers();
@@ -255,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
                         || word.equals("stop")
                         ) {
                     power_switch.setImageResource(R.drawable.ic_power);
-                    Toast.makeText(mContext, "Off state", Toast.LENGTH_LONG).show();
+                    // Toast.makeText(mContext, "Off state", Toast.LENGTH_LONG).show();
                     NetworkUtils.getdata(MainActivity.this, "0");
                     break;
                 } else {
@@ -282,13 +292,13 @@ public class MainActivity extends AppCompatActivity {
                             || word.equals("cut")
                             || word.equals("start")
                             || word.equals("power on")
-                            ||word.equals("on on on on on on on on on")
+                            || word.equals("on on on on on on on on on")
 
                             )
 
                     {
                         power_switch.setImageResource(R.drawable.ic_power_button);
-                        Toast.makeText(mContext, "On State", Toast.LENGTH_SHORT).show();
+                        //  Toast.makeText(mContext, "On State", Toast.LENGTH_SHORT).show();
                         NetworkUtils.getdata(MainActivity.this, "1");
                         break;
 
@@ -303,9 +313,25 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == RESULT_OK && grantResults.length > 0) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_LONG).show();
             }
         }
     }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(SAVED_STATE_KEY, isSwitched);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        String Key = new PrefManager(MainActivity.this).getKey();
+        NetworkUtils.getState(Key, mContext);
+
+    }
+
 }
 

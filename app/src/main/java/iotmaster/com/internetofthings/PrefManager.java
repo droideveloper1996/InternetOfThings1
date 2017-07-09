@@ -49,7 +49,7 @@ public class PrefManager {
     }
 
     public String getKey() {
-        return pref.getString(DEVICE_UNIQUE_KEY, "");
+        return pref.getString(DEVICE_UNIQUE_KEY, "null");
     }
 
     public void loginSuccessful(String username, Boolean response) {
