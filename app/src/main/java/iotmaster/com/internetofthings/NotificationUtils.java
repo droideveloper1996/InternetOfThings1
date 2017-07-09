@@ -52,4 +52,25 @@ public class NotificationUtils {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
         return bitmap;
     }
+
+    public static void alarmNotification(Context context) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        builder.setContentIntent(ContentIntent(context))
+                .setAutoCancel(true)
+                .setContentText("Alarm")
+                .setLargeIcon(bitmap(context))
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Action Required Task Completed...")
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(
+                        ("Internet of Things")));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            builder.setPriority(Notification.PRIORITY_HIGH);
+        }
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(NOTIFICATION_CODE, builder.build());
+    }
 }

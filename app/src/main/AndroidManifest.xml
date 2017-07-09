@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -50,6 +51,18 @@
         </activity>
         <activity android:name=".SetupActivity">
         </activity>
+
+        <service
+            android:name=".FirebaseJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
+
+        <activity android:name=".AlarmActivity">
+        </activity>
+        <receiver android:name=".AlarmBroadCast"/>
     </application>
 
 </manifest>

@@ -147,6 +147,10 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(new Intent(mContext, SetupActivity.class));
                         Log.i("Action", "Reset");
                         break;
+                    case R.id.action_alarm:
+
+                        startActivity(new Intent(MainActivity.this,AlarmActivity.class));
+
                 }
                 mDrawerLayout.closeDrawers();
                 return true;
@@ -225,48 +229,60 @@ public class MainActivity extends AppCompatActivity {
 
         if (resultCode == RESULT_OK && data != null) {
             ArrayList<String> strings = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-          //  Log.i("ASDFGH", strings.get(0));
+            //  Log.i("ASDFGH", strings.get(0));
             for (String abc : strings) {
-                    String word=abc.toLowerCase();
-                if (word.equals("turn off my lights")||
-                        word.equals("turn off my light")||
-                        word.equals("turn off")||
-                        word.equals("turn off lights")||
-                        word.equals("turn off light")||
-                        word.equals("switch off my lights")||
-                        word.equals("switch off my light")||
-                        word.equals("switch off")||
-                        word.equals("switch off light")||
-                        word.equals("turn off lights")||
-                        word.equals("off")||
-                        word.equals("close  my lights")||
-                        word.equals("close  my light")||
-                        word.equals("close lights")||
-                        word.equals("close light")||
-                        word.equals("close switch")) {
+                String word = abc.toLowerCase();
+                if (word.equals("turn off my lights") ||
+                        word.equals("turn off my light") ||
+                        word.equals("turn off") ||
+                        word.equals("turn off lights") ||
+                        word.equals("turn off light") ||
+                        word.equals("switch off my lights") ||
+                        word.equals("switch off my light") ||
+                        word.equals("switch off") ||
+                        word.equals("switch off light") ||
+                        word.equals("turn off lights") ||
+                        word.equals("off") ||
+                        word.equals("close  my lights") ||
+                        word.equals("close  my light") ||
+                        word.equals("close lights") ||
+                        word.equals("close light") ||
+                        word.equals("close switch") ||
+                        word.equals("power off") ||
+                        word.equals("stop switch")
+                        || word.equals("terminate")
+                        || word.equals("cut power")
+                        || word.equals("stop")
+                        ) {
                     power_switch.setImageResource(R.drawable.ic_power);
                     Toast.makeText(mContext, "Off state", Toast.LENGTH_LONG).show();
                     NetworkUtils.getdata(MainActivity.this, "0");
                     break;
                 } else {
                     if (word.equals("turn on my lights")
-                            ||word.equals("turn on my light")
-                            ||word.equals("turn on lights")
-                            ||word.equals("turn on lights")
-                            ||word.equals("on")
-                            ||word.equals("turn on")
-                            ||word.equals("turn on my lights")
-                            ||word.equals("switch on my light")
-                            ||word.equals("switch on lights")
-                            ||word.equals("switch on lights")
-                            ||word.equals("on")
-                            ||word.equals("switch on")
-                            ||word.equals("switch on my lights")
-                            ||word.equals("open  my lights")
-                            ||word.equals("open  my light")
-                            ||word.equals("open lights")
-                            ||word.equals("open light")
-                            ||word.equals("open switch")
+                            || word.equals("turn on my light")
+                            || word.equals("turn on lights")
+                            || word.equals("turn on lights")
+                            || word.equals("on")
+                            || word.equals("turn on")
+                            || word.equals("turn on my lights")
+                            || word.equals("switch on my light")
+                            || word.equals("switch on lights")
+                            || word.equals("switch on lights")
+                            || word.equals("on")
+                            || word.equals("switch on")
+                            || word.equals("switch on my lights")
+                            || word.equals("open  my lights")
+                            || word.equals("open  my light")
+                            || word.equals("open lights")
+                            || word.equals("open light")
+                            || word.equals("open switch")
+                            || word.equals("power on ")
+                            || word.equals("start switch")
+                            || word.equals("cut")
+                            || word.equals("start")
+                            || word.equals("power on")
+                            ||word.equals("on on on on on on on on on")
 
                             )
 

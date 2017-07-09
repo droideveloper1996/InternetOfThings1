@@ -35,7 +35,7 @@ public class NetworkUtils {
     public static void getdata(final Context context, final String id) {
         if (id != null) {
             final PrefManager prefManager = new PrefManager(context);
-            String url = "http://wifiswitch.atwebpages.com/changeState.php";
+            String url = "http://wifiswitch.000webhostapp.com/changeState.php";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
@@ -68,14 +68,15 @@ public class NetworkUtils {
 
     public static void registerProduct(final Context context, final Map<String, String> stringMap) {
         if (stringMap != null) {
-            String url = "http://wifiswitch.atwebpages.com/register.php";
+            String url = "http://wifiswitch.000webhostapp.com/register.php";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             PrefManager prefManager = new PrefManager(context);
                             prefManager.setUniqueKey(stringMap.get(SwitchRegisterActivity.UNIQUE_KEY));
-                            Log.i("STORED UNIQUEKEY", prefManager.getKey());
+                            Log.i("STORED UNIQUE KEY", prefManager.getKey());
+                            Log.i("response",response.toString());
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
                                 String result = jsonObject.optString("status");
@@ -121,7 +122,7 @@ public class NetworkUtils {
 
     public static void logMeIn(final Context context, final Map<String, String> stringMap) {
         if (stringMap != null) {
-            String url = "http://wifiswitch.atwebpages.com/login.php";
+            String url = "http://wifiswitch.000webhostapp.com/login.php";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
@@ -177,16 +178,16 @@ public class NetworkUtils {
     public static void initializeDevice(final Context context, String username, String password) {
         if (username != null && username != "" && password != null && password != "") {
 
-            String url = "http://192.168.4.1/?username=" + username + "&" + "password=" + password;
+            String url = "http://192.168.4.1/?metaData=" + username + "~" + password;
             RequestQueue queue = Volley.newRequestQueue(context);
 
-                // Request a string response from the provided URL.
+            // Request a string response from the provided URL.
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                        //TODO: Get Device response On Successful Initialization;
-                            Toast.makeText(context,response.toString(),Toast.LENGTH_LONG).show();
+                            //TODO: Get Device response On Successful Initialization;
+                            Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show();
                         }
                     }, new Response.ErrorListener() {
                 @Override

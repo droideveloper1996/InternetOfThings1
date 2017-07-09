@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        DeviceStatusCheck.checkStatus(this);
         mEmail = (EditText) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
         mLoginBtn = (Button) findViewById(R.id.login);
@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         notRegistered.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-               makeIntent();
+                makeIntent();
             }
         });
 
@@ -49,23 +49,22 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 email = mEmail.getText().toString();
                 password = mPassword.getText().toString();
-                login(email,password);
+                login(email, password);
 
             }
         });
     }
 
-    public void makeIntent()
-    {
-        startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+    public void makeIntent() {
+        startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
     }
 
-    public void login(String username,String pass) {
+    public void login(String username, String pass) {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(USERNAME,username );
+        map.put(USERNAME, username);
         map.put(PASSWORD, pass);
 
-        NetworkUtils.logMeIn(LoginActivity.this,map);
+        NetworkUtils.logMeIn(LoginActivity.this, map);
 
     }
 }
