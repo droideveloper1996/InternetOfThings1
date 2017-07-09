@@ -60,7 +60,8 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".AlarmActivity">
+        <activity android:name=".AlarmActivity"
+            android:parentActivityName=".MainActivity">
         </activity>
         <receiver android:name=".AlarmBroadCast"/>
     </application>

@@ -11,6 +11,8 @@ import android.content.Intent;
 public class AlarmBroadCast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+        NetworkUtils.getdata(context, "0");
         NotificationUtils.alarmNotification(context);
+
     }
 }

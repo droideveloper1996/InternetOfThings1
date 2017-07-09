@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="iotmaster.com.internetofthings.AlarmActivity">
+
+
+    <TimePicker
+        android:id="@+id/timePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></TimePicker>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/interval"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/edit_text_bg"
+            android:gravity="center"
+            android:inputType="number"
+            android:padding="8dp"
+            android:hint="Interval Time"
+            android:textSize="14dp"
+            android:textStyle="italic"
+            />
+
+        <ToggleButton
+            android:id="@+id/toggleButton"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/toggle_selector"
+            android:checked="false"
+            android:text="On"
+            android:layout_marginRight="16dp"
+            android:padding="5dp"
+            android:textAlignment="textEnd"
+            android:textSize="10dp"
+            android:textOff="Off"/>
+
+
+        <Button
+            android:id="@+id/setTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/btn_shape"
+            android:padding="16dp"
+            android:text="Set alarm"/>
+    </RelativeLayout>
+</LinearLayout>
