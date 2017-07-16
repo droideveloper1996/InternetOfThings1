@@ -1,4 +1,4 @@
-package iotmaster.com.internetofthings;
+package iotmaster.com.internetofthings.UserInterface;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import iotmaster.com.internetofthings.Network.NetworkUtils;
+import iotmaster.com.internetofthings.R;
 
 public class LoginActivity extends AppCompatActivity {
 

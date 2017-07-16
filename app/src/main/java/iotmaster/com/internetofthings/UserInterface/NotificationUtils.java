@@ -1,4 +1,4 @@
-package iotmaster.com.internetofthings;
+package iotmaster.com.internetofthings.UserInterface;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -9,6 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+
+import iotmaster.com.internetofthings.R;
+
 /**
  * Created by Abhishek on 29/06/2017.
  */

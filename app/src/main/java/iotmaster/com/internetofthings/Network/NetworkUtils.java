@@ -1,4 +1,4 @@
-package iotmaster.com.internetofthings;
+package iotmaster.com.internetofthings.Network;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,11 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import iotmaster.com.internetofthings.UserInterface.MainActivity;
+import iotmaster.com.internetofthings.data.PrefManager;
+import iotmaster.com.internetofthings.UserInterface.SwitchRegisterActivity;
+
 
 /**
  * Created by Abhishek on 29/06/2017.
@@ -217,6 +222,7 @@ public class NetworkUtils {
                                 JSONObject jsonObject = new JSONObject(response);
                                 String state = jsonObject.optString("status");
                                 Log.i("NetworkUtils GetState",state);
+
                                 if (state.equals("1")) {
                                     Toast.makeText(context, "HiGH Response", Toast.LENGTH_LONG).show();
 
@@ -251,6 +257,11 @@ public class NetworkUtils {
             RequestQueue requestQueue = Volley.newRequestQueue(context);
             requestQueue.add(stringRequest);
         }
+
+    }
+
+    public static void RegisterDeviceFromMainActivity(Context context,Map<String,String> map)
+    {
 
     }
 }

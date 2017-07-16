@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:name="iotmaster.com.internetofthings.SettingsFragment"
-    tools:context="iotmaster.com.internetofthings.SettingsActivity">
+    android:name="iotmaster.com.internetofthings.UserInterface.SettingsFragment"
+    tools:context="iotmaster.com.internetofthings.UserInterface.SettingsActivity">
 
 </fragment>

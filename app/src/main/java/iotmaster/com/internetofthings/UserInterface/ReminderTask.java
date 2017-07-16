@@ -1,4 +1,4 @@
-package iotmaster.com.internetofthings;
+package iotmaster.com.internetofthings.UserInterface;
 
 /**
  * Created by Abhishek on 08/07/2017.

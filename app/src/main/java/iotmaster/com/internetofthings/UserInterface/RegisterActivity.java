@@ -1,4 +1,4 @@
-package iotmaster.com.internetofthings;
+package iotmaster.com.internetofthings.UserInterface;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import iotmaster.com.internetofthings.R;
 
 public class RegisterActivity extends AppCompatActivity {
 

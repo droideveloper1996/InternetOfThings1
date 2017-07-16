@@ -1,4 +1,4 @@
-package iotmaster.com.internetofthings;
+package iotmaster.com.internetofthings.UserInterface;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -20,6 +20,9 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.Calendar;
+
+import iotmaster.com.internetofthings.Broadcasts.AlarmBroadCast;
+import iotmaster.com.internetofthings.R;
 
 import static android.widget.Toast.makeText;
 import static java.lang.Integer.parseInt;

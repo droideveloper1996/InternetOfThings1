@@ -1,4 +1,4 @@
-package iotmaster.com.internetofthings;
+package iotmaster.com.internetofthings.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;

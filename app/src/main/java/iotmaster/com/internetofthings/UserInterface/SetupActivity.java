@@ -1,4 +1,4 @@
-package iotmaster.com.internetofthings;
+package iotmaster.com.internetofthings.UserInterface;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 
+import iotmaster.com.internetofthings.Network.NetworkUtils;
+import iotmaster.com.internetofthings.R;
 
 
 public class SetupActivity extends AppCompatActivity {

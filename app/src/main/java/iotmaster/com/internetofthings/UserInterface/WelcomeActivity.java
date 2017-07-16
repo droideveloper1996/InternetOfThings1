@@ -1,4 +1,4 @@
-package iotmaster.com.internetofthings;
+package iotmaster.com.internetofthings.UserInterface;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import iotmaster.com.internetofthings.R;
+import iotmaster.com.internetofthings.data.PrefManager;
 
 /**
  * Created by Abhishek on 29/06/2017.

@@ -1,4 +1,4 @@
-package iotmaster.com.internetofthings;
+package iotmaster.com.internetofthings.UserInterface;
 
 import android.Manifest;
 import android.app.SearchManager;
@@ -15,6 +15,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,6 +34,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import iotmaster.com.internetofthings.Network.NetworkUtils;
+import iotmaster.com.internetofthings.R;
+import iotmaster.com.internetofthings.data.PrefManager;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActionBarDrawerToggle mDrawerToggle;
@@ -46,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
     Boolean isSwitched = false;
     LinearLayout linearLayout;
     NetworkUtils network;
+    ActionBar actionBar;
+    IntentFilter intentFilter;
+    public static final String HIGH_STATE = "1";
+    public static final String LOW_STATE = "0";
 
     public static final String SAVED_STATE_KEY = "saved-state";
 
@@ -54,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         power_switch = (ImageView) findViewById(R.id.power_switch);
-
+        actionBar = getSupportActionBar();
         if (savedInstanceState != null) {
             Boolean state = savedInstanceState.getBoolean(SAVED_STATE_KEY);
             if (state) {
@@ -80,7 +89,9 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.syncState();
         network = new NetworkUtils(this);
 
-
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(HIGH_STATE);
+        intentFilter.addAction(LOW_STATE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
@@ -129,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
                     power_switch.setImageResource(R.drawable.ic_power);
                     isSwitched = false;
                     NetworkUtils.getdata(MainActivity.this, "0");
-
                 }
 
             }
@@ -158,14 +168,18 @@ public class MainActivity extends AppCompatActivity {
                         Log.i("Action", "Reset");
                         break;
                     case R.id.action_alarm:
-
                         startActivity(new Intent(MainActivity.this, AlarmActivity.class));
+                        break;
+                    case R.id.action_my_device:
+                        startActivity(new Intent(mContext, MyDevicesActivity.class));
+                        break;
 
                 }
                 mDrawerLayout.closeDrawers();
                 return true;
             }
         });
+
 
     }
 
@@ -252,7 +266,12 @@ public class MainActivity extends AppCompatActivity {
                         word.equals("switch off") ||
                         word.equals("switch off light") ||
                         word.equals("turn off lights") ||
-                        word.equals("off") ||
+                        word.equals("off")
+                        || word.equals("please off")
+                        || word.equals("please off light")
+                        || word.equals("please off my light")
+                        || word.equals("please off lights")
+                        || word.equals("please off my lights") ||
                         word.equals("close  my lights") ||
                         word.equals("close  my light") ||
                         word.equals("close lights") ||
@@ -280,6 +299,13 @@ public class MainActivity extends AppCompatActivity {
                             || word.equals("switch on lights")
                             || word.equals("switch on lights")
                             || word.equals("on")
+                            || word.equals("please on")
+                            || word.equals("please on light")
+                            || word.equals("please on my light")
+                            || word.equals("please on lights")
+                            || word.equals("please on my lights")
+
+
                             || word.equals("switch on")
                             || word.equals("switch on my lights")
                             || word.equals("open  my lights")
@@ -333,5 +359,27 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void getState(Boolean check) {
+        if (check) {
+            power_switch.setImageResource(R.drawable.ic_power_button);
+            isSwitched = true;
+        } else {
+            power_switch.setImageResource(R.drawable.ic_power);
+            isSwitched = false;
+        }
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 }
 

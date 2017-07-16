@@ -33,7 +33,7 @@
 
         <item
             android:id="@+id/action_addProduct"
-            android:title="Add more Product"
+            android:title="Add new Device"
             android:icon="@drawable/ic_add_black_24px"
             app:showAsAction="never"/>
     </group>

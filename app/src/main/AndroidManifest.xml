@@ -21,14 +21,15 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".UserInterface.MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="com.google.android.gms.actions.SEARCH_ACTION"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-        <activity android:name=".WelcomeActivity">
+        <activity android:name=".UserInterface.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -36,34 +37,44 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegisterActivity"
+            android:name=".UserInterface.RegisterActivity"
             android:launchMode="singleTop">
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".UserInterface.LoginActivity"
             android:launchMode="singleTop">
         </activity>
-        <activity android:name=".SettingsActivity">
+        <activity android:name=".UserInterface.SettingsActivity">
         </activity>
-        <activity android:name=".SwitchRegisterActivity">
+        <activity android:name=".UserInterface.SwitchRegisterActivity">
         </activity>
-        <activity android:name=".LocationActivity">
+        <activity android:name=".UserInterface.LocationActivity">
         </activity>
-        <activity android:name=".SetupActivity">
+        <activity android:name=".UserInterface.SetupActivity">
         </activity>
 
         <service
-            android:name=".FirebaseJobService"
+            android:name=".UserInterface.FirebaseJobService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
             </intent-filter>
         </service>
 
-        <activity android:name=".AlarmActivity"
-            android:parentActivityName=".MainActivity">
+        <activity
+            android:name=".UserInterface.AlarmActivity"
+            android:parentActivityName=".UserInterface.MainActivity">
         </activity>
-        <receiver android:name=".AlarmBroadCast"/>
+
+        <receiver android:name=".Broadcasts.AlarmBroadCast"/>
+
+        <activity android:name=".UserInterface.MyDevicesActivity"
+            android:parentActivityName=".UserInterface.MainActivity">
+        </activity>
+        <provider
+            android:authorities="iotmaster.com.internetofthings"
+            android:exported="false"
+            android:name=".data.DeviceProvider"/>
     </application>
 
 </manifest>
