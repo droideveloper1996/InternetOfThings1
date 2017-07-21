@@ -11,12 +11,13 @@
 
     <ImageView
         android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_height="130dp"
         android:layout_gravity="center"
         android:layout_marginBottom="32dp"
         android:layout_marginTop="32dp"
-        android:alpha=".8"
-        android:src="@drawable/iot"/>
+        android:alpha="0"
+        android:id="@+id/bulb_image"
+        android:src="@drawable/bulb2"/>
 
     <EditText
         android:id="@+id/email"

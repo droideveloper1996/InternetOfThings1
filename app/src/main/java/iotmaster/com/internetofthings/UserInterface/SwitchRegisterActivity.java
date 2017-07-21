@@ -75,7 +75,7 @@ public class SwitchRegisterActivity extends AppCompatActivity {
                         addNewDevice(deviceName, key);
 
                         Toast.makeText(SwitchRegisterActivity.this, "Clicked Switch Activity", Toast.LENGTH_SHORT).show();
-                            finish();
+                        finish();
                     }
                 }
             }
@@ -116,7 +116,7 @@ public class SwitchRegisterActivity extends AppCompatActivity {
 
 
         insertedUri = contentResolver.insert(DeviceEntry.CONTENT_URI, contentValues);
-        Toast.makeText(SwitchRegisterActivity.this, "Added Device " + insertedUri.toString(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(SwitchRegisterActivity.this, "Added Device " + insertedUri.toString(), Toast.LENGTH_SHORT).show();
 
         if (insertedUri != null) {
             Toast.makeText(SwitchRegisterActivity.this, "Added Device", Toast.LENGTH_SHORT);
@@ -130,7 +130,8 @@ public class SwitchRegisterActivity extends AppCompatActivity {
 
         NetworkUtils.RegisterDeviceFromMainActivity(SwitchRegisterActivity.this, devicemap);
 
-
+        finish();
     }
+
 
 }

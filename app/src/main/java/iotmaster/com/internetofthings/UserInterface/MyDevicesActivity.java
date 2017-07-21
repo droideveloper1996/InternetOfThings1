@@ -1,28 +1,39 @@
 package iotmaster.com.internetofthings.UserInterface;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.Toast;
 
-import iotmaster.com.internetofthings.Adapters.GridAdapter;
+import iotmaster.com.internetofthings.Adapters.DeviceAdapter;
 import iotmaster.com.internetofthings.R;
 import iotmaster.com.internetofthings.data.DeviceContract.DeviceEntry;
 
-public class MyDevicesActivity extends AppCompatActivity {
+public class MyDevicesActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     Toolbar toolbar;
     public static final String TAG = "MyDeviceActivity.class";
+    ListView listView;
+    DeviceAdapter deviceAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +45,22 @@ public class MyDevicesActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Manage Devices");
 
         GridView gridView = (GridView) findViewById(R.id.grid_layout);
-        gridView.setAdapter(new GridAdapter(this));
+      //  gridView.setAdapter(new GridAdapter(this));
 
         getDeviceData();
+        listView = (ListView) findViewById(R.id.list);
+        deviceAdapter = new DeviceAdapter(this, null);
+        listView.setAdapter(deviceAdapter);
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               Intent i=new  Intent(MyDevicesActivity.this,DeepManageActivity.class);
+                Uri uri = ContentUris.withAppendedId(DeviceEntry.CONTENT_URI, id);
+                i.setData(uri);
+                startActivity(i);
+            }
+        });
+        getSupportLoaderManager().initLoader(10, null, this);
     }
 
     @Override
@@ -63,6 +87,7 @@ public class MyDevicesActivity extends AppCompatActivity {
     public void getDeviceData() {
         ContentResolver contentResolver = getContentResolver();
         Cursor cursor = null;
+        try {
         if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
             cursor = contentResolver.query(DeviceEntry.CONTENT_URI, null, null, null, null, null);
         } else {
@@ -70,8 +95,8 @@ public class MyDevicesActivity extends AppCompatActivity {
             return;
 
         }
-        if (cursor.getCount() != 0 && cursor != null) {
-            try {
+        if (cursor != null&& cursor.getCount()!=0) {
+
                 while (cursor.moveToNext()) {
                     int deviceName = cursor.getColumnIndex(DeviceEntry.DEVICE_NAME);
                     int deviceKey = cursor.getColumnIndex(DeviceEntry.UNIQUE_KEY);
@@ -95,14 +120,64 @@ public class MyDevicesActivity extends AppCompatActivity {
                     Log.i(TAG, name + "            " + key + "         " + relay11 + "         " + relay22 + "         " + relay33 + "         " + "     " + relay44 + "         " + relay55);
 
                 }
-            } catch (Exception e) {
+            }} catch (Exception e) {
                 e.printStackTrace();
             } finally {
+            if(cursor!=null) {
                 cursor.close();
             }
-        } else {
-            Toast.makeText(MyDevicesActivity.this, "Failed finding Device", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    public void getDevice() {
+        Cursor c = null;
+        ContentResolver contentResolver = getContentResolver();
+
+
+        c = contentResolver.query(DeviceEntry.CONTENT_URI, null, null, null, null, null);
+        System.out.println("help -1");
+
+        if (c.getCount() != 0 && c != null) {
+            System.out.println("help0");
+            while (c.moveToNext()) {
+                int deviceName = c.getColumnIndex(DeviceEntry.DEVICE_NAME);
+
+                int relay1 = c.getColumnIndex(DeviceEntry.RELAY1);
+
+
+                String name = c.getString(deviceName);
+
+                int relay11 = c.getInt(relay1);
+
+
+                Log.i(TAG, name + "            " + relay11 + "         ");
+
+            }
+        } else
+
+        {
+        }
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(this, DeviceEntry.CONTENT_URI, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        deviceAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        deviceAdapter.swapCursor(null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getSupportLoaderManager().restartLoader(10,null,this);
     }
 }

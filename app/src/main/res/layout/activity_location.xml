@@ -4,30 +4,102 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#2e3237"
-    android:padding="16dp"
-    tools:context="iotmaster.com.internetofthings.UserInterface.LocationActivity">
 
-    <TextView
-        android:id="@+id/txtview"
-        android:textColor="#f8f8f8"
-        android:layout_width="wrap_content"
+    android:background="#2e3237"
+    android:orientation="vertical"
+    tools:context="iotmaster.com.internetofthings.Location.LocationActivity">
+
+    <include
+        layout="@layout/my_device_toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="175dp"
-            android:layout_height="175dp"
-            android:alpha=".9"
-            android:layout_centerHorizontal="true"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="24dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/settings_label"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimaryDark"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dip"
+                android:layout_marginTop="4dp"
+                android:background="@color/colorPrimary"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="4dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="4dp"
+                    android:src="@drawable/ic_globe_primary_24dp"/>
+
+                <Switch
+                    android:id="@+id/enable_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="#f8f8f8"
+                    android:layout_gravity="center"
+                    android:text="@string/enable_geofences"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/location_list"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimaryDark"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dip"
+                android:layout_marginTop="4dp"
+                android:background="@color/colorPrimary"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/places_list_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_marginTop="8dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:src="@drawable/locationmap"
-            />
+            android:layout_marginTop="12dp"
+            android:background="@drawable/gradient_onw"
+            android:onClick="onAddPlaceButtonClicked"
+            android:text="@string/add_new_location"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textColor="@android:color/white"/>
+
     </RelativeLayout>
+
 
 </LinearLayout>

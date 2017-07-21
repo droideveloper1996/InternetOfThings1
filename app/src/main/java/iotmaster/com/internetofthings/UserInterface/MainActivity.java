@@ -2,7 +2,9 @@ package iotmaster.com.internetofthings.UserInterface;
 
 import android.Manifest;
 import android.app.SearchManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -10,13 +12,13 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -27,16 +29,34 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
+import iotmaster.com.internetofthings.BackgroundServices.DeviceStatusCheck;
+import iotmaster.com.internetofthings.Location.LocationActivity;
 import iotmaster.com.internetofthings.Network.NetworkUtils;
 import iotmaster.com.internetofthings.R;
 import iotmaster.com.internetofthings.data.PrefManager;
+
+import static iotmaster.com.internetofthings.UserInterface.SwitchRegisterActivity.UNIQUE_KEY;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,16 +72,34 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout linearLayout;
     NetworkUtils network;
     ActionBar actionBar;
+    RelativeLayout relativeLayout;
     IntentFilter intentFilter;
     public static final String HIGH_STATE = "1";
     public static final String LOW_STATE = "0";
-
+    DeviceState deviceState;
     public static final String SAVED_STATE_KEY = "saved-state";
+    ProgressBar progressBar;
+    TextView ProgresText;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        relativeLayout=(RelativeLayout)findViewById(R.id.main_relative_layout);
+        NotificationUtils.GeoNotification(this);
+        //Firebase Job Dispatcher;
+        progressBar=(ProgressBar)findViewById(R.id.progressBar);
+        ProgresText=(TextView)findViewById(R.id.progressText);
+        deviceState = new DeviceState();
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(HIGH_STATE);
+        intentFilter.addAction(LOW_STATE);
+
+        DeviceStatusCheck.checkStatus(this);
+        Boolean fromSetupActivity = getIntent().getBooleanExtra("fromSetupActivity", false);
+        if (fromSetupActivity) {
+            dialogueBuilder();
+        }
         power_switch = (ImageView) findViewById(R.id.power_switch);
         actionBar = getSupportActionBar();
         if (savedInstanceState != null) {
@@ -76,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        //   FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         setSupportActionBar(toolbar);
         linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
         mContext = MainActivity.this;
@@ -118,12 +156,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        floatingActionButton.setOnClickListener(new OnClickListener() {
+    /*    floatingActionButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 listen();
             }
-        });
+        });*/
 
         power_switch.setOnClickListener(new OnClickListener() {
             @Override
@@ -180,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        // NotificationUtils.GeoNotification(this);
     }
 
 
@@ -355,7 +393,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         String Key = new PrefManager(MainActivity.this).getKey();
-        NetworkUtils.getState(Key, mContext);
+        checkDeviceState(Key);
 
     }
 
@@ -373,12 +411,100 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
+        unregisterReceiver(deviceState);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        registerReceiver(deviceState, intentFilter);
+
+
+    }
+
+    void dialogueBuilder() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+        alertDialog.setTitle("Device Reset was Successful...");
+        alertDialog.setMessage("Please restart the device...Thank You for Choosing Our Product");
+        alertDialog.setIcon(R.drawable.ic_check_circle_black_24px);
+        alertDialog.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+
+            }
+        });
+
+        alertDialog.show();
+    }
+
+
+    public class DeviceState extends BroadcastReceiver {
+
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+        }
+
+
+    }
+
+
+    public void checkDeviceState(final String key) {
+
+        if (key != null) {
+            String finalResult;
+
+            String url = "http://iotsswitch.atwebpages.com/switchit.php";
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                String state = jsonObject.optString("status");
+                                Log.i("NetworkUtils GetState", state);
+
+                                if (state.equals("1")) {
+                                    Toast.makeText(MainActivity.this, "HiGH Response", Toast.LENGTH_LONG).show();
+                                    getState(true);
+                                } else if (state.equals("0")) {
+                                    Toast.makeText(MainActivity.this, "LOW Response", Toast.LENGTH_LONG).show();
+                                    getState(false);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            finally {
+                                progressBar.setVisibility(View.GONE);
+                                ProgresText.setVisibility(View.GONE);
+                                relativeLayout.setVisibility(View.VISIBLE);
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() {
+
+
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put(UNIQUE_KEY, key);
+
+                    return params;
+                }
+
+            };
+
+            RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+            requestQueue.add(stringRequest);
+        }
 
     }
 }

@@ -19,9 +19,15 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+            android:value="@integer/google_play_services_version"
 
-        <activity android:name=".UserInterface.MainActivity"
+            />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCkLhcMp42tjD5QgmTiLn6lqqkBmNnRgFs"/>
+
+        <activity
+            android:name=".UserInterface.MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="com.google.android.gms.actions.SEARCH_ACTION"/>
@@ -46,20 +52,25 @@
         </activity>
         <activity android:name=".UserInterface.SettingsActivity">
         </activity>
-        <activity android:name=".UserInterface.SwitchRegisterActivity">
+        <activity
+            android:name=".UserInterface.SwitchRegisterActivity"
+            android:parentActivityName=".UserInterface.MainActivity">
         </activity>
-        <activity android:name=".UserInterface.LocationActivity">
+        <activity
+            android:name=".Location.LocationActivity"
+            android:parentActivityName=".UserInterface.MainActivity">
         </activity>
         <activity android:name=".UserInterface.SetupActivity">
         </activity>
 
         <service
-            android:name=".UserInterface.FirebaseJobService"
+            android:name=".BackgroundServices.FirebaseJobService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
             </intent-filter>
         </service>
+
 
         <activity
             android:name=".UserInterface.AlarmActivity"
@@ -68,13 +79,36 @@
 
         <receiver android:name=".Broadcasts.AlarmBroadCast"/>
 
-        <activity android:name=".UserInterface.MyDevicesActivity"
+        <activity
+            android:name=".UserInterface.MyDevicesActivity"
             android:parentActivityName=".UserInterface.MainActivity">
         </activity>
+
         <provider
+            android:name=".data.DeviceProvider"
             android:authorities="iotmaster.com.internetofthings"
             android:exported="false"
-            android:name=".data.DeviceProvider"/>
+            android:multiprocess="true"/>
+
+        <activity
+            android:name=".UserInterface.DeepManageActivity"
+            android:label="@string/title_activity_deep_manage"
+            android:parentActivityName=".UserInterface.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="iotmaster.com.internetofthings.UserInterface.MainActivity"/>
+        </activity>
+        <provider
+            android:name=".data.LocationProvider"
+            android:authorities="iotmaster.com.internetofthings2"
+            android:exported="false"
+            android:multiprocess="true"/>
+        <receiver android:name=".Broadcasts.GeoFenceBroadCastReciever"/>
+
+        <service android:name=".BackgroundServices.ReminderService"/>
+        <receiver
+            android:name=".UserInterface.MainActivity$DeviceState"
+            android:exported="false"/>
     </application>
 
 </manifest>

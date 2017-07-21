@@ -12,7 +12,7 @@ import iotmaster.com.internetofthings.data.DeviceContract.DeviceEntry;
 
 public class DeviceHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "devices";
+    public static final String DATABASE_NAME = "devices.db";
     public static final int DATABASE_VERSION = 1;
 
     public DeviceHelper(Context context) {

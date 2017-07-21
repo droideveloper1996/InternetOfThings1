@@ -1,10 +1,12 @@
-package iotmaster.com.internetofthings.UserInterface;
+package iotmaster.com.internetofthings.BackgroundServices;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.firebase.jobdispatcher.JobService;
+
+import iotmaster.com.internetofthings.Network.NetworkUtils;
 
 
 /**
@@ -21,6 +23,7 @@ public class FirebaseJobService extends JobService {
             protected Object doInBackground(Object[] params) {
                 Context context=FirebaseJobService.this;
                 Log.i("FirebaseJobDispatcher","Executed This JOB");
+                NetworkUtils.checkDeviceStatus(context);
                 return null;
             }
 

@@ -26,6 +26,8 @@ public class PrefManager {
 
     public static final String SKIP_LOGIN = "true";
 
+    public static final String ACTIVE="active";
+
     public PrefManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -62,6 +64,15 @@ public class PrefManager {
 
     public boolean isSuccessfulLogin(){
         return pref.getBoolean(SKIP_LOGIN,false);
+    }
+
+    public void makeActive(String key)
+    {
+        if(key!=null)
+        {
+            editor.putString(ACTIVE,key);
+            editor.commit();
+        }
     }
 
 }

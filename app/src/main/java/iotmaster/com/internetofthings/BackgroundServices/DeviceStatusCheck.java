@@ -1,4 +1,4 @@
-package iotmaster.com.internetofthings.UserInterface;
+package iotmaster.com.internetofthings.BackgroundServices;
 
 
 import android.content.Context;

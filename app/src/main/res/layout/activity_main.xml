@@ -39,40 +39,74 @@
                       app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <RelativeLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/power_switch"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_power"
-                    />
 
-                <Button
-                    android:id="@+id/btn_play_again"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/btn_shape"
-                    android:padding="8dp"
-                    android:visibility="gone"
-                    android:text="@string/play_again"/>
 
                 <TextView
-                    android:id="@+id/ScanResult"
-                    android:visibility="gone"
+                    android:id="@+id/progressText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_toRightOf="@id/btn_play_again"
-                    android:text="Available Wifi"
-                    android:textColor="#f2f2f2"
-                    android:textSize="14sp"/>
-            </RelativeLayout>
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="16dp"
+                    android:textStyle="italic"
+                    android:text="Fetching Data Please Wait..."
+                    android:textColor="#f8f8f8"
+                    android:textSize="18dp"/>
 
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/progressText"
+                    android:layout_centerHorizontal="true"
+                    />
+                <RelativeLayout
+                    android:id="@+id/main_relative_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/ic_link_white_24px"/>
+
+                    <ImageView
+                        android:id="@+id/power_switch"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_power"
+                        />
+
+                    <Button
+                        android:id="@+id/btn_play_again"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/btn_shape"
+                        android:padding="8dp"
+                        android:text="@string/play_again"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/ScanResult"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_toRightOf="@id/btn_play_again"
+                        android:text="Available Wifi"
+                        android:textColor="#f2f2f2"
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
+                </RelativeLayout>
+            </RelativeLayout>
 
         </LinearLayout>
 
@@ -80,17 +114,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_margin="16dp"
-                android:elevation="6dp"
-                android:src="@drawable/ic_mic_white_24px"
-                app:backgroundTint="@color/powerOff"
-                />
+            <!-- <android.support.design.widget.FloatingActionButton
+                 android:id="@+id/fab"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentBottom="true"
+                 android:layout_alignParentRight="true"
+                 android:layout_margin="16dp"
+                 android:elevation="6dp"
+                 android:src="@drawable/ic_mic_white_24px"
+                 app:backgroundTint="@color/powerOff"
+                 />-->
         </RelativeLayout>
     </android.support.design.widget.CoordinatorLayout>
 

@@ -19,8 +19,8 @@ import iotmaster.com.internetofthings.data.DeviceContract.DeviceEntry;
  */
 
 public class DeviceProvider extends ContentProvider {
-    public static final int MATCH_WITHOUT_ID = 100;
-    public static final int MATCH_WITH_ID = 101;
+    public static final int MATCH_WITHOUT_ID = 200;
+    public static final int MATCH_WITH_ID = 201;
     public static final UriMatcher sUriMatcher = getMatch();
     DeviceHelper mDeviceHelper;
 
@@ -48,20 +48,20 @@ public class DeviceProvider extends ContentProvider {
         Cursor cursor = null;
         switch (match) {
             case MATCH_WITH_ID:
-                String id = (uri.getPathSegments().get(1));
-                String sele = "_id=?";
-                String[] args = new String[]{id};
-                cursor = sqLiteDatabase.query(DeviceEntry.TABLE_NAME, null, sele, args, null, null, null);
+
+                cursor = sqLiteDatabase.query(DeviceEntry.TABLE_NAME, projection, selection, selectionArgs, sortOrder, null, null);
                 break;
             case MATCH_WITHOUT_ID:
-                cursor = sqLiteDatabase.query(DeviceEntry.TABLE_NAME, null, null, null, null, null, null);
+
+                cursor = sqLiteDatabase.query(DeviceEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null);
                 break;
         }
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         if (cursor != null && cursor.getCount() != 0) {
             return cursor;
+        } else {
+            return null;
         }
-        return null;
     }
 
     @Nullable
@@ -76,6 +76,9 @@ public class DeviceProvider extends ContentProvider {
         SQLiteDatabase db = mDeviceHelper.getWritableDatabase();
 
         //Sanity Checks.....
+        Log.i("ABCDEF", "Reached Here");
+        Log.i("ABCDEF", uri.toString());
+
 
         int match = sUriMatcher.match(uri);
         Uri appendenUri = null;
@@ -84,7 +87,7 @@ public class DeviceProvider extends ContentProvider {
 
             case MATCH_WITHOUT_ID:
                 row = db.insert(DeviceEntry.TABLE_NAME, null, values);
-                Log.i("Device Provider",Long.toString(row));
+                Log.i("Device Provider", Long.toString(row));
                 if (row > 0) {
                     appendenUri = ContentUris.withAppendedId(uri, row);
                 }
@@ -102,7 +105,10 @@ public class DeviceProvider extends ContentProvider {
         int row = 0;
         switch (match) {
             case MATCH_WITH_ID:
-                row = sqLiteDatabase.delete(DeviceEntry.TABLE_NAME, selection, selectionArgs);
+                String id=uri.getPathSegments().get(1);
+                String where="_id=?";
+                String args[]=new String[]{id};
+                row = sqLiteDatabase.delete(DeviceEntry.TABLE_NAME, where, args);
 
                 break;
             case MATCH_WITHOUT_ID:
@@ -115,7 +121,7 @@ public class DeviceProvider extends ContentProvider {
         if (row > 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
-      return row;
+        return row;
     }
 
     @Override

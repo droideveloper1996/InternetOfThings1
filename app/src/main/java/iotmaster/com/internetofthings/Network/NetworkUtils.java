@@ -2,12 +2,15 @@ package iotmaster.com.internetofthings.Network;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -19,8 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import iotmaster.com.internetofthings.UserInterface.MainActivity;
-import iotmaster.com.internetofthings.data.PrefManager;
 import iotmaster.com.internetofthings.UserInterface.SwitchRegisterActivity;
+import iotmaster.com.internetofthings.data.PrefManager;
 
 
 /**
@@ -183,7 +186,12 @@ public class NetworkUtils {
     public static void initializeDevice(final Context context, String username, String password) {
         if (username != null && username != "" && password != null && password != "") {
 
-            String url = "http://192.168.4.1/?metaData=" + username + "~" + password;
+         //   String url = "http://192.168.4.1/setting?ssid=" + username + "&pass=" + password;
+
+              String url=  makeUrl(username,password).toString();
+
+            Log.i("Url Commited", url.toString());
+
             RequestQueue queue = Volley.newRequestQueue(context);
 
             // Request a string response from the provided URL.
@@ -192,6 +200,7 @@ public class NetworkUtils {
                         @Override
                         public void onResponse(String response) {
                             //TODO: Get Device response On Successful Initialization;
+                            Log.i("SuccessMessage", response.toString());
                             Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show();
                         }
                     }, new Response.ErrorListener() {
@@ -210,18 +219,18 @@ public class NetworkUtils {
     public static void getState(final String key, final Context context) {
         if (key != null) {
             String finalResult;
-            final PrefManager prefManager = new PrefManager(context);
+
             String url = "http://iotsswitch.atwebpages.com/switchit.php";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
-                        public void onResponse( String response) {
+                        public void onResponse(String response) {
 
                             Toast.makeText(context, response, Toast.LENGTH_LONG).show();
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
                                 String state = jsonObject.optString("status");
-                                Log.i("NetworkUtils GetState",state);
+                                Log.i("NetworkUtils GetState", state);
 
                                 if (state.equals("1")) {
                                     Toast.makeText(context, "HiGH Response", Toast.LENGTH_LONG).show();
@@ -260,8 +269,46 @@ public class NetworkUtils {
 
     }
 
-    public static void RegisterDeviceFromMainActivity(Context context,Map<String,String> map)
-    {
+    public static void RegisterDeviceFromMainActivity(Context context, Map<String, String> map) {
+
+    }
+
+
+    public static void checkDeviceStatus(Context context) {
+        String url = "http://iotsswitch.atwebpages.com/update.php";
+        final PrefManager prefManager = new PrefManager(context);
+        StringRequest stringRequest = new StringRequest(Method.POST, url, new Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> map = new HashMap<>();
+                map.put(UNIQUE_KEY, prefManager.getKey());
+                map.put("connectivity", "1");
+                return map;
+
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+
+    }
+
+    public static Uri makeUrl( String ss, String pas) {
+
+        Uri uri = Uri.parse("http://192.168.4.1/setting").buildUpon()
+                .appendQueryParameter("ssid", ss).appendQueryParameter("pass", pas).build();
+        return uri;
 
     }
 }

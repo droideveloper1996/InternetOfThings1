@@ -10,6 +10,8 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
+import iotmaster.com.internetofthings.BackgroundServices.ReminderHelper;
+import iotmaster.com.internetofthings.BackgroundServices.ReminderService;
 import iotmaster.com.internetofthings.R;
 
 /**
@@ -76,4 +78,64 @@ public class NotificationUtils {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_CODE, builder.build());
     }
+
+
+    public static NotificationCompat.Action dimissNotification(Context context) {
+
+        Intent intent = new Intent(context, ReminderService.class);
+        intent.setAction(ReminderHelper.DISMISS_NOTIFICATION);
+        PendingIntent pendingIntent = PendingIntent.getService(context, 4, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Action action = new NotificationCompat.Action(R.drawable.ignore2, "Ignore", pendingIntent);
+        return action;
+    }
+
+    static NotificationCompat.Action negative(Context context) {
+        Intent intent = new Intent(context, ReminderService.class);
+        intent.setAction(ReminderHelper.NEGATIVE_ACTION);
+        PendingIntent pendingIntent = PendingIntent.getService(context, 4, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Action action = new NotificationCompat.Action(R.drawable.p2, "OFF", pendingIntent);
+        return action;
+    }
+
+    static NotificationCompat.Action positive(Context context) {
+        Intent intent = new Intent(context, ReminderService.class);
+        intent.setAction(ReminderHelper.POSITIVE_ACTION);
+        PendingIntent pendingIntent = PendingIntent.getService(context, 4, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Action action = new NotificationCompat.Action(R.drawable.p1, "ON", pendingIntent);
+        return action;
+    }
+
+    public static void GeoNotification(Context context) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        builder.setContentIntent(ContentIntent(context))
+                .setAutoCancel(true)
+                .setContentText("Alert")
+                .setLargeIcon(bitmap(context))
+                .setSmallIcon(R.drawable.bulb3)
+                .setContentTitle("Task Completed Action Required... ")
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .addAction(positive(context))
+                .addAction(negative(context))
+                .addAction(dimissNotification(context))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(
+                        ("Internet of Things")));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            builder.setPriority(Notification.PRIORITY_HIGH);
+        }
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(NOTIFICATION_CODE, builder.build());
+    }
+
+    public static void clearAllNotifications(Context context) {
+        NotificationManager notificationManager = (NotificationManager)
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+    }
 }
+

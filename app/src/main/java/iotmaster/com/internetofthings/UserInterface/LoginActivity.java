@@ -2,11 +2,13 @@ package iotmaster.com.internetofthings.UserInterface;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -26,15 +28,24 @@ public class LoginActivity extends AppCompatActivity {
 
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
+    ImageView bulb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        DeviceStatusCheck.checkStatus(this);
         mEmail = (EditText) findViewById(R.id.email);
+        bulb = (ImageView) findViewById(R.id.bulb_image);
         mPassword = (EditText) findViewById(R.id.password);
         mLoginBtn = (Button) findViewById(R.id.login);
+        Handler handler=new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                bulb.setY(1000f);
+                bulb.animate().alpha(1f).setDuration(1500).translationY(0f).scaleYBy(0).scaleXBy(0).start();
+            }
+        },1000);
 
 
         notRegistered = (TextView) findViewById(R.id.notRegistered);
