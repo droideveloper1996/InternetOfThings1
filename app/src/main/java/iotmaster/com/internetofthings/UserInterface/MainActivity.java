@@ -7,14 +7,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -40,6 +43,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,6 +55,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import iotmaster.com.internetofthings.BackgroundServices.DeviceStatusCheck;
+import iotmaster.com.internetofthings.BackgroundServices.ReminderHelper;
+import iotmaster.com.internetofthings.FireBaseCloudMessaging.Config;
 import iotmaster.com.internetofthings.Location.LocationActivity;
 import iotmaster.com.internetofthings.Network.NetworkUtils;
 import iotmaster.com.internetofthings.R;
@@ -60,6 +66,7 @@ import static iotmaster.com.internetofthings.UserInterface.SwitchRegisterActivit
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG ="MainActivity.this" ;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
@@ -67,15 +74,15 @@ public class MainActivity extends AppCompatActivity {
     private Context mContext;
     List<ScanResult> scanResults;
     private IntentFilter mIntentFilter;
-    ImageView power_switch;
-    Boolean isSwitched = false;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+
+    static ImageView power_switch;
+    static Boolean isSwitched = false;
     LinearLayout linearLayout;
     NetworkUtils network;
     ActionBar actionBar;
     RelativeLayout relativeLayout;
-    IntentFilter intentFilter;
-    public static final String HIGH_STATE = "1";
-    public static final String LOW_STATE = "0";
+
     DeviceState deviceState;
     public static final String SAVED_STATE_KEY = "saved-state";
     ProgressBar progressBar;
@@ -85,15 +92,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        relativeLayout=(RelativeLayout)findViewById(R.id.main_relative_layout);
+        relativeLayout = (RelativeLayout) findViewById(R.id.main_relative_layout);
         NotificationUtils.GeoNotification(this);
         //Firebase Job Dispatcher;
-        progressBar=(ProgressBar)findViewById(R.id.progressBar);
-        ProgresText=(TextView)findViewById(R.id.progressText);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        ProgresText = (TextView) findViewById(R.id.progressText);
         deviceState = new DeviceState();
-        intentFilter = new IntentFilter();
-        intentFilter.addAction(HIGH_STATE);
-        intentFilter.addAction(LOW_STATE);
+
 
         DeviceStatusCheck.checkStatus(this);
         Boolean fromSetupActivity = getIntent().getBooleanExtra("fromSetupActivity", false);
@@ -127,9 +132,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.syncState();
         network = new NetworkUtils(this);
 
-        intentFilter = new IntentFilter();
-        intentFilter.addAction(HIGH_STATE);
-        intentFilter.addAction(LOW_STATE);
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
@@ -156,13 +159,17 @@ public class MainActivity extends AppCompatActivity {
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        /***
+         * Voice Search Begins Here...
+         */
     /*    floatingActionButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 listen();
             }
         });*/
-
+        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         power_switch.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -170,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
                     power_switch.setImageResource(R.drawable.ic_power_button);
                     isSwitched = true;
+
                     NetworkUtils.getdata(MainActivity.this, "1");
 
 
@@ -219,8 +227,46 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // NotificationUtils.GeoNotification(this);
-    }
 
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+
+                    displayFirebaseRegId();
+
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+
+                    String message = intent.getStringExtra("message");
+
+                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+
+                   // txtMessage.setText(message);
+                }
+            }
+        };
+
+        displayFirebaseRegId();
+
+}
+    private void displayFirebaseRegId() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+
+        Log.e(TAG, "Firebase reg id: " + regId);
+
+     /*   if (!TextUtils.isEmpty(regId))
+            txtRegId.setText("Firebase Reg Id: " + regId);
+        else
+            txtRegId.setText("Firebase Reg Id is not received yet!");*/
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -232,6 +278,9 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_setting:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                break;
+            case R.id.action_voice:
+                listen();
                 break;
 
         }
@@ -397,7 +446,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void getState(Boolean check) {
+    public static void getState(Boolean check) {
         if (check) {
             power_switch.setImageResource(R.drawable.ic_power_button);
             isSwitched = true;
@@ -410,15 +459,24 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
         super.onPause();
-        unregisterReceiver(deviceState);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(deviceState, intentFilter);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
 
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
 
     }
 
@@ -438,23 +496,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public class DeviceState extends BroadcastReceiver {
+public static class DeviceState extends BroadcastReceiver {
 
+    public DeviceState() {
+        //super();
+    }
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
+    @Override
+    public void onReceive(Context context, Intent intent) {
 
+        String action = intent.getAction();
+        if (action.equals(ReminderHelper.INTENT_ACTION_POSITIVE)) {
+            getState(true);
+        } else if (action.equals(ReminderHelper.INTENT_ACTION_NEGATIVE)) {
+            getState(false);
         }
 
-
     }
+
+
+}
 
 
     public void checkDeviceState(final String key) {
 
         if (key != null) {
-            String finalResult;
-
             String url = "http://iotsswitch.atwebpages.com/switchit.php";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
@@ -466,17 +532,9 @@ public class MainActivity extends AppCompatActivity {
                                 String state = jsonObject.optString("status");
                                 Log.i("NetworkUtils GetState", state);
 
-                                if (state.equals("1")) {
-                                    Toast.makeText(MainActivity.this, "HiGH Response", Toast.LENGTH_LONG).show();
-                                    getState(true);
-                                } else if (state.equals("0")) {
-                                    Toast.makeText(MainActivity.this, "LOW Response", Toast.LENGTH_LONG).show();
-                                    getState(false);
-                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                            }
-                            finally {
+                            } finally {
                                 progressBar.setVisibility(View.GONE);
                                 ProgresText.setVisibility(View.GONE);
                                 relativeLayout.setVisibility(View.VISIBLE);
@@ -487,7 +545,11 @@ public class MainActivity extends AppCompatActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+
+                            progressBar.setVisibility(View.GONE);
+                            ProgresText.setText("Please Check Internet Connection");
+
+
                         }
                     }) {
                 @Override

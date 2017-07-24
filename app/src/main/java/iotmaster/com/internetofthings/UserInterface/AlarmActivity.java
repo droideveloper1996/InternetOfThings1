@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,6 +39,9 @@ public class AlarmActivity extends AppCompatActivity implements AdapterView.OnIt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
         Button button = (Button) findViewById(R.id.setTime);
@@ -99,7 +103,7 @@ public class AlarmActivity extends AppCompatActivity implements AdapterView.OnIt
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, min);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-               intervalFrequency, pendingIntent);
+                intervalFrequency, pendingIntent);
         Log.i("AlarmActivity", intervalFrequency.toString());
     }
 
@@ -109,17 +113,15 @@ public class AlarmActivity extends AppCompatActivity implements AdapterView.OnIt
 
         switch (position) {
             case 0:
-                intervalFrequency = timX * 3600 * 1*1000;
+                intervalFrequency = timX * 3600 * 1 * 1000;
                 break;
             case 1:
-                intervalFrequency = timX * 60*1000;
+                intervalFrequency = timX * 60 * 1000;
                 break;
             case 2:
-                intervalFrequency = timX*1000;
+                intervalFrequency = timX * 1000;
                 break;
         }
-
-
 
 
     }

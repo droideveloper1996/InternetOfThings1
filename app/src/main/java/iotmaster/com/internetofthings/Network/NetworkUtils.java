@@ -3,6 +3,7 @@ package iotmaster.com.internetofthings.Network;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -36,11 +37,16 @@ public class NetworkUtils {
     public static final String UNIQUE_KEY = "unique_key";
     public static final String STATUS = "status";
 
+    public static final String TAG = "NetworkUtils.class";
+
     public NetworkUtils(Context context) {
         mContext = context;
     }
 
     public static void getdata(final Context context, final String id) {
+        final Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+
+
         if (id != null) {
             final PrefManager prefManager = new PrefManager(context);
             String url = "http://iotsswitch.atwebpages.com/changeState.php";
@@ -48,13 +54,15 @@ public class NetworkUtils {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+                            Log.i(TAG, response.toString());
+                            vibrator.vibrate(300);
+
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
+                            Log.e("NetworkUtils.class", error.toString());
                         }
                     }) {
                 @Override
@@ -186,9 +194,9 @@ public class NetworkUtils {
     public static void initializeDevice(final Context context, String username, String password) {
         if (username != null && username != "" && password != null && password != "") {
 
-         //   String url = "http://192.168.4.1/setting?ssid=" + username + "&pass=" + password;
+            //   String url = "http://192.168.4.1/setting?ssid=" + username + "&pass=" + password;
 
-              String url=  makeUrl(username,password).toString();
+            String url = makeUrl(username, password).toString();
 
             Log.i("Url Commited", url.toString());
 
@@ -304,7 +312,7 @@ public class NetworkUtils {
 
     }
 
-    public static Uri makeUrl( String ss, String pas) {
+    public static Uri makeUrl(String ss, String pas) {
 
         Uri uri = Uri.parse("http://192.168.4.1/setting").buildUpon()
                 .appendQueryParameter("ssid", ss).appendQueryParameter("pass", pas).build();
