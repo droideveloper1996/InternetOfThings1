@@ -43,7 +43,7 @@ public class ReminderHelper {
             Intent intent = new Intent(context, DeviceState.class);
             intent.setAction(INTENT_ACTION_POSITIVE);
             context.sendBroadcast(intent);
-           // NotificationUtils.clearAllNotifications(context);
+            NotificationUtils.clearAllNotifications(context);
 
         } else if (action.equals(NEGATIVE_ACTION)) {
             Log.i(
@@ -53,7 +53,7 @@ public class ReminderHelper {
             Intent intent = new Intent(context, DeviceState.class);
             intent.setAction(INTENT_ACTION_NEGATIVE);
             context.sendBroadcast(intent);
-          //  NotificationUtils.clearAllNotifications(context);
+            NotificationUtils.clearAllNotifications(context);
 
         }
 

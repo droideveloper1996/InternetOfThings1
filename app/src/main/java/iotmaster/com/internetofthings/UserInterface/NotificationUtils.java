@@ -132,7 +132,7 @@ public class NotificationUtils {
     public static void GeoNotification(Context context) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setContentIntent(ContentIntent(context))
-                .setAutoCancel(true)
+                .setAutoCancel(false)
                 .setContentText("Alert")
                 .setLargeIcon(bitmap(context))
                 .setSmallIcon(R.drawable.bulb3)
@@ -142,7 +142,7 @@ public class NotificationUtils {
                 .addAction(positive(context))
                 .addAction(negative(context))
                 .addAction(dimissNotification(context))
-               // .setOngoing(true)
+               .setOngoing(true)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(
                         ("Internet of Things")));
 
