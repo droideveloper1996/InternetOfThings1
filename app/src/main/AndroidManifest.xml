@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="iotmaster.com.internetofthings">
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
@@ -12,16 +13,14 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/success"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher"
+        android:roundIcon="@drawable/success"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"
-
-            />
+            android:value="@integer/google_play_services_version"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCkLhcMp42tjD5QgmTiLn6lqqkBmNnRgFs"/>
@@ -71,7 +70,6 @@
             </intent-filter>
         </service>
 
-
         <activity
             android:name=".UserInterface.AlarmActivity"
             android:parentActivityName=".UserInterface.MainActivity">
@@ -98,28 +96,52 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="iotmaster.com.internetofthings.UserInterface.MainActivity"/>
         </activity>
+
         <provider
             android:name=".data.LocationProvider"
             android:authorities="iotmaster.com.internetofthings2"
             android:exported="false"
             android:multiprocess="true"/>
+
         <receiver android:name=".Broadcasts.GeoFenceBroadCastReciever"/>
 
         <service android:name=".BackgroundServices.ReminderService"/>
+
         <receiver
             android:name=".UserInterface.MainActivity$DeviceState"
             android:exported="false">
-            <intent-filter >
-            <action android:name="iotmaster.com.internetofthings.POSITIVE"/>
-            <action android:name="iotmaster.com.internetofthings.NEGATIVE"/>
-        </intent-filter>
+            <intent-filter>
+                <action android:name="iotmaster.com.internetofthings.POSITIVE"/>
+                <action android:name="iotmaster.com.internetofthings.NEGATIVE"/>
+                <action android:name="iotmaster.com.internetofthings.online"/>
+                <action android:name="iotmaster.com.internetofthings.online"/>
+            </intent-filter>
         </receiver>
-        <service
-            android:name=".FireBaseCloudMessaging.MyFirebaseInstanceIDService">
+
+        <service android:name=".FireBaseCloudMessaging.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
+        <service android:name=".FireBaseCloudMessaging.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".UserInterface.SplashActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_splash"
+            android:parentActivityName=".UserInterface.MainActivity"
+            android:theme="@style/FullscreenTheme">
+        </activity>
+        <activity
+            android:name=".UserInterface.StatisticActivity"
+            android:label="@string/title_activity_statistic"
+            android:parentActivityName=".UserInterface.MainActivity"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>

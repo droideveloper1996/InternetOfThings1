@@ -9,9 +9,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.NavigationView;
@@ -23,6 +22,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -31,7 +32,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -50,11 +50,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import iotmaster.com.internetofthings.BackgroundServices.DeviceStatusCheck;
+import iotmaster.com.internetofthings.Adapters.StyleAdapter;
+import iotmaster.com.internetofthings.Adapters.StyleAdapter.ListItemClickListener;
 import iotmaster.com.internetofthings.BackgroundServices.ReminderHelper;
 import iotmaster.com.internetofthings.FireBaseCloudMessaging.Config;
 import iotmaster.com.internetofthings.Location.LocationActivity;
@@ -64,24 +66,28 @@ import iotmaster.com.internetofthings.data.PrefManager;
 
 import static iotmaster.com.internetofthings.UserInterface.SwitchRegisterActivity.UNIQUE_KEY;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ListItemClickListener {
 
-    private static final String TAG ="MainActivity.this" ;
+    private static final String TAG = "MainActivity.this";
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
-    private WifiManager mWifiManager;
     private Context mContext;
-    List<ScanResult> scanResults;
-    private IntentFilter mIntentFilter;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-
+    static public ImageView imageView;
     static ImageView power_switch;
     static Boolean isSwitched = false;
-    LinearLayout linearLayout;
+
+
     NetworkUtils network;
     ActionBar actionBar;
     RelativeLayout relativeLayout;
+    String Key;
+
+    RecyclerView recyclerView;
+    LinearLayoutManager layoutManager;
+    StyleAdapter styleAdapter;
+    ArrayList<String> mList;
 
     DeviceState deviceState;
     public static final String SAVED_STATE_KEY = "saved-state";
@@ -93,14 +99,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         relativeLayout = (RelativeLayout) findViewById(R.id.main_relative_layout);
-        NotificationUtils.GeoNotification(this);
+        //  NotificationUtils.GeoNotification(this);
         //Firebase Job Dispatcher;
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         ProgresText = (TextView) findViewById(R.id.progressText);
         deviceState = new DeviceState();
+        imageView = (ImageView) findViewById(R.id.device_status);
+        // DeviceStatusCheck.checkStatus(this);
+        getOnlineOffline();
+        getDeviceOnlineOffline();
 
 
-        DeviceStatusCheck.checkStatus(this);
         Boolean fromSetupActivity = getIntent().getBooleanExtra("fromSetupActivity", false);
         if (fromSetupActivity) {
             dialogueBuilder();
@@ -119,57 +128,44 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //   FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         setSupportActionBar(toolbar);
-        linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
+        getSupportActionBar().setTitle("");
         mContext = MainActivity.this;
-        mWifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mNavigationView = (NavigationView) findViewById(R.id.navigationView);
-        final TextView scanResult = (TextView) findViewById(R.id.ScanResult);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.True, R.string.False);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
         network = new NetworkUtils(this);
-
+        Key = new PrefManager(MainActivity.this).getKey();
+        Log.i("KEYKEY", Key);
+        checkDeviceState(Key);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
         }
-        findViewById(R.id.btn_play_again).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkConnection();
-                mWifiManager.startScan();
-                scanResults = mWifiManager.getScanResults();
-                String wifi = "";
-                for (ScanResult scanResult : scanResults) {
-
-                    wifi += scanResult.SSID.toString() + '\n';
-
-                }
-                scanResult.setText(wifi);
-
-                NotificationUtils.installNotification(mContext);
-                //startActivity(new Intent(MainActivity.this, LoginActivity.class));
-
-            }
-        });
-
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        /***
-         * Voice Search Begins Here...
+
+        /**
+         *
+         * RECYCLER VIEW AND STYLE ADAPTER
          */
-    /*    floatingActionButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listen();
-            }
-        });*/
-        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+       /* mList = new ArrayList<>();
+        for (int i = 0; i < 50; i++) {
+            mList.add("This is Bulb  " + i);
+        }
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        recyclerView.setHasFixedSize(true);
+        styleAdapter = new StyleAdapter(this, mList, this);
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(styleAdapter);*/
+
+
+        final Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         power_switch.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
                     power_switch.setImageResource(R.drawable.ic_power_button);
                     isSwitched = true;
 
+                    vibrator.vibrate(50);
                     NetworkUtils.getdata(MainActivity.this, "1");
 
 
@@ -185,13 +182,24 @@ public class MainActivity extends AppCompatActivity {
 
                     power_switch.setImageResource(R.drawable.ic_power);
                     isSwitched = false;
+                    vibrator.vibrate(50);
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            vibrator.vibrate(60);
+
+                        }
+                    }, 100);
+
+
                     NetworkUtils.getdata(MainActivity.this, "0");
                 }
-
             }
+
         });
-        mIntentFilter = new IntentFilter();
-        mIntentFilter.addAction(mWifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+
         if (getIntent().getAction() != null && getIntent().getAction().equals("com.google.android.gms.actions.SEARCH_ACTION")) {
             String query = getIntent().getStringExtra(SearchManager.QUERY);
             Log.e("Query:", query);   //query is the search word
@@ -219,6 +227,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.action_my_device:
                         startActivity(new Intent(mContext, MyDevicesActivity.class));
                         break;
+                    case R.id.action_stat:
+                        startActivity(new Intent(mContext,StatisticActivity.class));
 
                 }
                 mDrawerLayout.closeDrawers();
@@ -248,24 +258,20 @@ public class MainActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
 
-                   // txtMessage.setText(message);
+                    // txtMessage.setText(message);
                 }
             }
         };
 
         displayFirebaseRegId();
+        FirebaseMessaging.getInstance().subscribeToTopic("news");
+    }
 
-}
     private void displayFirebaseRegId() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);
-
         Log.e(TAG, "Firebase reg id: " + regId);
 
-     /*   if (!TextUtils.isEmpty(regId))
-            txtRegId.setText("Firebase Reg Id: " + regId);
-        else
-            txtRegId.setText("Firebase Reg Id is not received yet!");*/
     }
 
     @Override
@@ -297,26 +303,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void checkConnection() {
-        if (mWifiManager.isWifiEnabled()) {
-            mWifiManager.startScan();
-            String ssid = mWifiManager.getConnectionInfo().getSSID();
-            System.out.println(mWifiManager.getConnectionInfo());
-            System.out.println(ssid);
-            if (ssid.equals("\"Fibre\"")) {
-                Toast.makeText(mContext, "Connected to Preferred Network", Toast.LENGTH_LONG).show();
-
-
-            } else {
-                Toast.makeText(mContext, "Please Connect to Fibre Network", Toast.LENGTH_SHORT).show();
-
-            }
-
-        } else {
-            mWifiManager.setWifiEnabled(true);
-
-        }
-    }
 
     public void listen() {
 
@@ -441,18 +427,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        String Key = new PrefManager(MainActivity.this).getKey();
-        checkDeviceState(Key);
+
 
     }
 
     public static void getState(Boolean check) {
         if (check) {
-            power_switch.setImageResource(R.drawable.ic_power_button);
-            isSwitched = true;
+            try {
+                power_switch.setImageResource(R.drawable.ic_power_button);
+                isSwitched = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
-            power_switch.setImageResource(R.drawable.ic_power);
-            isSwitched = false;
+            try {
+                power_switch.setImageResource(R.drawable.ic_power);
+                isSwitched = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -470,13 +463,10 @@ public class MainActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
                 new IntentFilter(Config.REGISTRATION_COMPLETE));
 
-        // register new push message receiver
-        // by doing this, the activity will be notified each time a new message arrives
+
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
                 new IntentFilter(Config.PUSH_NOTIFICATION));
 
-        // clear the notification area when the app is opened
-        NotificationUtils.clearNotifications(getApplicationContext());
 
     }
 
@@ -487,51 +477,66 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.setIcon(R.drawable.ic_check_circle_black_24px);
         alertDialog.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-
-
             }
         });
 
         alertDialog.show();
     }
 
-
-public static class DeviceState extends BroadcastReceiver {
-
-    public DeviceState() {
-        //super();
+    @Override
+    public void onClick(int index) {
+        Toast.makeText(mContext, "Clicked Position " + index, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
 
-        String action = intent.getAction();
-        if (action.equals(ReminderHelper.INTENT_ACTION_POSITIVE)) {
-            getState(true);
-        } else if (action.equals(ReminderHelper.INTENT_ACTION_NEGATIVE)) {
-            getState(false);
+    public static class DeviceState extends BroadcastReceiver {
+
+        public DeviceState() {
+            //super();
         }
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String action = intent.getAction();
+            if (action.equals(ReminderHelper.INTENT_ACTION_POSITIVE)) {
+                getState(true);
+            } else if (action.equals(ReminderHelper.INTENT_ACTION_NEGATIVE)) {
+                getState(false);
+            } else if (action.equals(NetworkUtils.DEVICE_IS_ONLINE)) {
+
+                imageView.setImageResource(R.drawable.conne);
+
+
+            } else if (action.equals(NetworkUtils.DEVICE_IS_NOT_ONLINE)) {
+                imageView.setImageResource(R.drawable.disc);
+
+            }
+
+        }
+
+
     }
-
-
-}
 
 
     public void checkDeviceState(final String key) {
-
         if (key != null) {
-            String url = "http://iotsswitch.atwebpages.com/switchit.php";
+            String url = "http://www.codeham.com/iot/switchit.php";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
                                 String state = jsonObject.optString("status");
-                                Log.i("NetworkUtils GetState", state);
+                                Log.i("DeviceState", state);
 
+                                if (state.equals("1")) {
+                                    power_switch.setImageResource(R.drawable.ic_power_button);
+
+                                } else if (state.equals("0")) {
+                                    power_switch.setImageResource(R.drawable.ic_power);
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             } finally {
@@ -539,26 +544,19 @@ public static class DeviceState extends BroadcastReceiver {
                                 ProgresText.setVisibility(View.GONE);
                                 relativeLayout.setVisibility(View.VISIBLE);
                             }
-
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-
                             progressBar.setVisibility(View.GONE);
                             ProgresText.setText("Please Check Internet Connection");
-
-
                         }
                     }) {
                 @Override
                 protected Map<String, String> getParams() {
-
-
                     Map<String, String> params = new HashMap<String, String>();
                     params.put(UNIQUE_KEY, key);
-
                     return params;
                 }
 
@@ -568,6 +566,52 @@ public static class DeviceState extends BroadcastReceiver {
             requestQueue.add(stringRequest);
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+        alertDialog.setTitle("Exit");
+        alertDialog.setMessage("Are you sure want to exit");
+        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                finish();
+                moveTaskToBack(true);
+            }
+        });
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        alertDialog.show();
+    }
+    //cs56zlTPOnY:APA91bHCi4mauCKVU0cfu0gpXxRXnHAOalKNiNz0mBaP8NeUNsrUibS829VwCJ18y0vomMom5ySssKlFAU5zSZCB_ONbAE_YRsGo5eu8AACVsjNZSXaIeYU1K6c1MYBtkSUqK24Pc5wO
+
+    void getDeviceOnlineOffline() {
+        int delay = 1000; // delay for 1 sec.
+        int period = 20000; // repeat every 20 sec.
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                NetworkUtils.checkDeviceStatus(mContext);
+            }
+        }, delay, period);
+    }
+
+    void getOnlineOffline() {
+
+        int delay = 1000; // delay for 1 sec.
+        int period = 10000; // repeat every 10 sec.
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                NetworkUtils.getState(Key, mContext);
+            }
+        }, delay, period);
     }
 }
 

@@ -1,72 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+>
 
-    <include
-        android:id="@+id/inc"
-        layout="@layout/my_device_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <LinearLayout
+    <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/inc"
-        android:layout_centerInParent="true"
-        android:orientation="vertical"
-        tools:context="iotmaster.com.internetofthings.UserInterface.DeepManageActivity">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <include
+            android:id="@+id/inc"
+            layout="@layout/my_device_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_below="@id/inc"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:padding="16dp"
+            android:text="Control Switches"
+            android:textSize="24sp"
+            android:textStyle="italic|bold"
+            />
 
-            <ToggleButton
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:horizontalSpacing="100dp"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/bulb1"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_column="0"
+                android:layout_margin="16dp"
+                android:layout_row="0"
+                android:src="@drawable/bulb"/>
+
+            <Switch
                 android:id="@+id/toggle1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_column="1"
+                android:layout_marginLeft="150dp"
+                android:layout_marginTop="20dp"
+                android:layout_row="0"
+                android:padding="16dp"
+                android:tag="1"
+                />
 
-            <ToggleButton
+            <ImageView
+                android:id="@+id/bulb2"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_column="0"
+                android:layout_margin="16dp"
+                android:layout_row="1"
+                android:src="@drawable/bulb"/>
+
+            <Switch
                 android:id="@+id/toggle2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+                android:layout_column="1"
+                android:layout_marginLeft="150dp"
+                android:layout_marginTop="20dp"
+                android:layout_row="1"
+                android:padding="16dp"
+                android:tag="2"
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                />
 
-            <ToggleButton
+            <ImageView
+                android:id="@+id/bulb3"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_column="0"
+                android:layout_margin="16dp"
+                android:layout_row="3"
+                android:src="@drawable/bulb"/>
+
+
+            <Switch
                 android:id="@+id/toggle3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_column="1"
+                android:layout_marginLeft="150dp"
+                android:layout_marginTop="20dp"
+                android:layout_row="3"
+                android:padding="16dp"
+                android:tag="3"
+                />
 
-            <ToggleButton
+            <ImageView
+                android:id="@+id/bulb4"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_column="0"
+                android:layout_margin="16dp"
+                android:layout_row="4"
+                android:src="@drawable/bulb"/>
+
+
+            <Switch
                 android:id="@+id/toggle4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+                android:layout_column="1"
+                android:layout_marginLeft="150dp"
+                android:layout_marginTop="20dp"
+                android:layout_row="4"
+                android:padding="16dp"
+                android:tag="4"
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                />
 
-            <ToggleButton
+            <ImageView
+                android:id="@+id/bulb5"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_column="0"
+                android:layout_margin="16dp"
+                android:layout_row="5"
+                android:src="@drawable/bulb"/>
+
+            <Switch
                 android:id="@+id/toggle5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <ToggleButton
-                android:id="@+id/toggle6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-
-    </LinearLayout>
-</RelativeLayout>
+                android:layout_column="1"
+                android:layout_marginLeft="150dp"
+                android:layout_marginTop="20dp"
+                android:layout_row="5"
+                android:padding="16dp"
+                android:tag="5"
+                />
+        </GridLayout>
+    </RelativeLayout>
+</ScrollView>

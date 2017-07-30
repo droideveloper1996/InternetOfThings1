@@ -1,74 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="iotmaster.com.internetofthings.UserInterface.AlarmActivity">
+    android:layout_height="match_parent">
 
-    <include
-        layout="@layout/my_device_toolbar"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <TimePicker
-        android:id="@+id/timePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></TimePicker>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <RelativeLayout
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabGravity="fill"
+            app:tabMode="fixed"/>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <EditText
-            android:id="@+id/interval"
-            android:layout_width="55dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="32dp"
-            android:gravity="center"
-            android:hint="Interval Time"
-            android:inputType="number"
-            android:padding="8dp"
-            android:text="0"
-            android:textSize="12dp"
-            android:textStyle="italic"
-            />
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_toRightOf="@id/interval"
-            android:prompt="@string/spinner_title"/>
-
-        <ToggleButton
-            android:id="@+id/toggleButton"
-            android:layout_width="60dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/toggle_selector"
-            android:checked="false"
-            android:padding="5dp"
-            android:text="On"
-            android:textAlignment="textEnd"
-            android:textOff="Off"
-            android:textSize="10dp"/>
-
-
-        <Button
-            android:id="@+id/setTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/btn_shape"
-            android:padding="16dp"
-            android:text="Set alarm"/>
-    </RelativeLayout>
-</LinearLayout>
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+</android.support.design.widget.CoordinatorLayout>

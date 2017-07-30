@@ -12,6 +12,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import iotmaster.com.internetofthings.R;
@@ -22,6 +26,18 @@ public class DeepManageActivity extends AppCompatActivity {
 
     private Uri mUri = null;
     String key;
+
+    Switch aSwitch1;
+    Switch aSwitch2;
+    Switch aSwitch3;
+    Switch aSwitch4;
+    Switch aSwitch5;
+
+    ImageView view1;
+    ImageView view2;
+    ImageView view3;
+    ImageView view4;
+    ImageView view5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +52,24 @@ public class DeepManageActivity extends AppCompatActivity {
 
         Log.i("mUri", mUri.toString());
 
+        aSwitch1 = (Switch) findViewById(R.id.toggle1);
+        aSwitch2 = (Switch) findViewById(R.id.toggle2);
+        aSwitch3 = (Switch) findViewById(R.id.toggle3);
+        aSwitch4 = (Switch) findViewById(R.id.toggle4);
+        aSwitch5 = (Switch) findViewById(R.id.toggle5);
+
+        view1 = (ImageView) findViewById(R.id.bulb1);
+        view2 = (ImageView) findViewById(R.id.bulb2);
+        view3 = (ImageView) findViewById(R.id.bulb3);
+        view4 = (ImageView) findViewById(R.id.bulb4);
+        view5 = (ImageView) findViewById(R.id.bulb5);
+
+        swit(aSwitch1, view1);
+        swit(aSwitch2, view2);
+        swit(aSwitch3, view3);
+        swit(aSwitch4, view4);
+        swit(aSwitch5, view5);
+
     }
 
     @Override
@@ -44,6 +78,8 @@ public class DeepManageActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_customise_device:
+                String Key = new PrefManager(DeepManageActivity.this).getKey();
+                Log.i("KEYKEYK", Key);
                 break;
             case R.id.action_remove_device:
                 dialogueBuilder();
@@ -52,7 +88,7 @@ public class DeepManageActivity extends AppCompatActivity {
                 String b = getData();
                 if (b != null) {
                     Log.i("DeepManageActivity", b);
-                    new PrefManager(this).makeActive(b);
+                    new PrefManager(this).setUniqueKey(b);
                 } else {
                     Log.i("DeepManageActivity", "Error getting key");
                 }
@@ -101,14 +137,65 @@ public class DeepManageActivity extends AppCompatActivity {
         Cursor cursor = null;
         ContentResolver contentResolver = getContentResolver();
         String projection[] = new String[]{DeviceEntry.UNIQUE_KEY};
-        cursor = contentResolver.query(mUri, projection, null, null, null);
+        String selection="_id=?";
+        String id=mUri.getPathSegments().get(1);
+       // System.out.println("fdsgfdhsh"+id);
+        String args[]=new String[]{id};
+
+        cursor = contentResolver.query(mUri, null, selection, args, null,null);
         if (cursor != null && cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 int key_index = cursor.getColumnIndex(DeviceEntry.UNIQUE_KEY);
 
                 key = cursor.getString(key_index);
+                System.out.println(key);
             }
         }
         return key;
+    }
+
+    public void swit(final Switch s, final ImageView imageView) {
+
+
+        s.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int tag = Integer.parseInt((String) (s.getTag()));
+                //  Log.i("hello check",Integer.toString(tag));
+
+                if (isChecked) {
+                    switch (tag) {
+                        case 1:
+
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                        case 5:
+                            break;
+                    }
+                    imageView.setImageResource(R.drawable.yellow);
+                } else {
+                    switch (tag) {
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                        case 5:
+                            break;
+                    }
+                    imageView.setImageResource(R.drawable.bulb);
+
+                }
+            }
+        });
     }
 }

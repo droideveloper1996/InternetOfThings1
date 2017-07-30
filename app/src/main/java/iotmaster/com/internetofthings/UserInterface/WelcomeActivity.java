@@ -132,7 +132,7 @@ public class WelcomeActivity extends AppCompatActivity {
         if (!isLogin) {
             startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
         } else {
-            startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+            startActivity(new Intent(WelcomeActivity.this, SplashActivity.class));
 
         }
         finish();

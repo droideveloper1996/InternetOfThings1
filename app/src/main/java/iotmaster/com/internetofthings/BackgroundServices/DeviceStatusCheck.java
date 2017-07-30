@@ -42,7 +42,7 @@ public class DeviceStatusCheck {
                 // don't persist past a device reboot
                 .setLifetime(Lifetime.FOREVER)
                 // start between 0 and 15 minutes (900 seconds)
-                .setTrigger(Trigger.executionWindow(0, 1))
+                .setTrigger(Trigger.executionWindow(0, 10))
                 // overwrite an existing job with the same tag
                 .setReplaceCurrent(true)
                 // retry with exponential backoff

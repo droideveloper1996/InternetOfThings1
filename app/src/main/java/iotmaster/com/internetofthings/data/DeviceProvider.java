@@ -48,11 +48,12 @@ public class DeviceProvider extends ContentProvider {
         Cursor cursor = null;
         switch (match) {
             case MATCH_WITH_ID:
-
-                cursor = sqLiteDatabase.query(DeviceEntry.TABLE_NAME, projection, selection, selectionArgs, sortOrder, null, null);
+                System.out.println(0);
+                System.out.println(uri);
+                cursor = sqLiteDatabase.query(DeviceEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null);
                 break;
             case MATCH_WITHOUT_ID:
-
+               // System.out.println(1);
                 cursor = sqLiteDatabase.query(DeviceEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null);
                 break;
         }

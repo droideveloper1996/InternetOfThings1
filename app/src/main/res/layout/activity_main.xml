@@ -24,8 +24,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+                app:popupTheme="@style/AppTheme.PopupOverlay">
 
+
+
+
+                    <TextView
+                        android:id="@+id/toolbar_title"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="deX"/>
+
+            </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -33,7 +45,7 @@
                       android:id="@+id/linearLayout"
                       android:layout_width="match_parent"
                       android:layout_height="match_parent"
-                      android:background="#16222A"
+                      android:background="@drawable/abstract01"
                       android:orientation="vertical"
                       android:padding="@dimen/activity_vertical_margin"
                       app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -44,6 +56,15 @@
                 android:layout_height="match_parent">
 
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:visibility="gone">
+                </android.support.v7.widget.RecyclerView>
 
                 <TextView
                     android:id="@+id/progressText"
@@ -51,10 +72,10 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="16dp"
-                    android:textStyle="italic"
                     android:text="Getting State Please Wait..."
                     android:textColor="#f8f8f8"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:textStyle="italic"/>
 
                 <ProgressBar
                     android:id="@+id/progressBar"
@@ -63,6 +84,7 @@
                     android:layout_above="@id/progressText"
                     android:layout_centerHorizontal="true"
                     />
+
                 <RelativeLayout
                     android:id="@+id/main_relative_layout"
                     android:layout_width="match_parent"
@@ -71,10 +93,11 @@
                     android:visibility="gone">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/device_status"
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/ic_link_white_24px"/>
+                        android:src="@drawable/disc"/>
 
                     <ImageView
                         android:id="@+id/power_switch"

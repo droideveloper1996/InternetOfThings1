@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Iridium</string>
+    <string name="app_name">deX</string>
     <string name="title_activity_welcome">Home Screen</string>
     <string name="next">NEXT</string>
     <string name="skip">SKIP</string>
@@ -42,5 +42,10 @@
     <string name="location_permissions">Location Permissions</string>
     <string name="enable_geofences">Enable Geofences</string>
     <string name="privacy">http://www.google.com/policies/privacy</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">deX\nHome Automation</string>
+    <string name="title_activity_statistic">StatisticActivity</string>
 
 </resources>

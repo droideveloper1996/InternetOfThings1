@@ -44,7 +44,7 @@ public class NotificationUtils {
     public static final int PENDING_INTENT_CODE = 5543;
     public static final int NOTIFICATION_CODE = 3434;
 
-   public NotificationUtils(Context context) {
+    public NotificationUtils(Context context) {
         this.mContext = context;
     }
 
@@ -132,17 +132,17 @@ public class NotificationUtils {
     public static void GeoNotification(Context context) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setContentIntent(ContentIntent(context))
-                .setAutoCancel(false)
+                .setAutoCancel(true)
                 .setContentText("Alert")
                 .setLargeIcon(bitmap(context))
-                .setSmallIcon(R.drawable.bulb3)
+                .setSmallIcon(R.drawable.cfl200)
                 .setContentTitle("Task Completed Action Required... ")
                 .setDefaults(Notification.DEFAULT_SOUND)
                 .setDefaults(Notification.DEFAULT_VIBRATE)
                 .addAction(positive(context))
                 .addAction(negative(context))
                 .addAction(dimissNotification(context))
-               .setOngoing(true)
+                //.setOngoing(true)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(
                         ("Internet of Things")));
 
@@ -159,14 +159,6 @@ public class NotificationUtils {
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
     }
-
-
-
-
-
-
-
-
 
 
     public void showNotificationMessage(String title, String message, String timeStamp, Intent intent) {

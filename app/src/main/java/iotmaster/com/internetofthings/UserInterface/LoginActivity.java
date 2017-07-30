@@ -38,14 +38,15 @@ public class LoginActivity extends AppCompatActivity {
         bulb = (ImageView) findViewById(R.id.bulb_image);
         mPassword = (EditText) findViewById(R.id.password);
         mLoginBtn = (Button) findViewById(R.id.login);
+        bulb.setImageResource(R.drawable.cfl100);
         Handler handler=new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                bulb.setY(1000f);
-                bulb.animate().alpha(1f).setDuration(1500).translationY(0f).scaleYBy(0).scaleXBy(0).start();
+                bulb.setX(1000f);
+                bulb.animate().alpha(1f).setDuration(450).translationX(0f).start();
             }
-        },1000);
+        },100);
 
 
         notRegistered = (TextView) findViewById(R.id.notRegistered);

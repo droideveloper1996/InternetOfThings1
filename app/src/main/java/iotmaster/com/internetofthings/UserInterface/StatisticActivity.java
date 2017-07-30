@@ -9,48 +9,32 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import iotmaster.com.internetofthings.Fragments.fragment_four;
-import iotmaster.com.internetofthings.Fragments.fragment_one;
-import iotmaster.com.internetofthings.Fragments.fragment_three;
-import iotmaster.com.internetofthings.Fragments.fragment_two;
+import iotmaster.com.internetofthings.Fragments.StatsFragment.BarFragment;
+import iotmaster.com.internetofthings.Fragments.StatsFragment.CombineChart;
+import iotmaster.com.internetofthings.Fragments.StatsFragment.LineChart;
+import iotmaster.com.internetofthings.Fragments.StatsFragment.PieFragment;
 import iotmaster.com.internetofthings.R;
 
-public class AlarmActivity extends AppCompatActivity {
+public class StatisticActivity extends AppCompatActivity {
 
-    public static final String TAG = "AlarmActivity";
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
-    private int[] tabIcons = {
-            R.drawable.ic_alarm_add_white_24dp,
-            R.drawable.ic_alarm_white_24dp,
-            R.drawable.ic_alarm_on_white_24dp,
-            R.drawable.ic_alarm_off_white_24dp
-
-    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alarm);
-
+        setContentView(R.layout.activity_statistic);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        TabLayout gt = (TabLayout) findViewById(R.id.tablayout);
 
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+
         viewPager.setAdapter(pagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-        setupTabIcons();
-    }
-    private void setupTabIcons() {
-        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
-        tabLayout.getTabAt(3).setIcon(tabIcons[3]);
+        gt.setupWithViewPager(viewPager);
 
     }
+
 
     class PagerAdapter extends FragmentStatePagerAdapter {
 
@@ -62,13 +46,13 @@ public class AlarmActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new fragment_one();
+                    return new BarFragment();
                 case 1:
-                    return new fragment_two();
+                    return new CombineChart();
                 case 2:
-                    return new fragment_three();
+                    return new LineChart();
                 case 3:
-                    return new fragment_four();
+                    return new PieFragment();
             }
             return null;
         }
@@ -82,16 +66,20 @@ public class AlarmActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Add";
+                    return "Bar";
                 case 1:
-                    return "Two";
+                    return "Chart";
                 case 2:
-                    return "Three";
+                    return "Line";
                 case 3:
-                    return "Delete";
+                    return "Pie";
             }
             return null;
         }
     }
-
 }
+
+
+
+
+

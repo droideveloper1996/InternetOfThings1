@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import iotmaster.com.internetofthings.UserInterface.MainActivity;
+import iotmaster.com.internetofthings.UserInterface.MainActivity.DeviceState;
 import iotmaster.com.internetofthings.UserInterface.SwitchRegisterActivity;
 import iotmaster.com.internetofthings.data.PrefManager;
 
@@ -39,6 +40,10 @@ public class NetworkUtils {
 
     public static final String TAG = "NetworkUtils.class";
 
+    public static final String DEVICE_IS_ONLINE="iotmaster.com.internetofthings.online";
+    public static final String DEVICE_IS_NOT_ONLINE="iotmaster.com.internetofthings.offline";
+
+
     public NetworkUtils(Context context) {
         mContext = context;
     }
@@ -49,13 +54,13 @@ public class NetworkUtils {
 
         if (id != null) {
             final PrefManager prefManager = new PrefManager(context);
-            String url = "http://iotsswitch.atwebpages.com/changeState.php";
+            String url = "http://www.codeham.com/iot/changeState.php";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             Log.i(TAG, response.toString());
-                            vibrator.vibrate(300);
+                            //   vibrator.vibrate(300);
 
                         }
                     },
@@ -84,7 +89,7 @@ public class NetworkUtils {
 
     public static void registerProduct(final Context context, final Map<String, String> stringMap) {
         if (stringMap != null) {
-            String url = "http://iotsswitch.atwebpages.com/register.php";
+            String url = "http://www.codeham.com/iot/register.php";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
@@ -138,7 +143,7 @@ public class NetworkUtils {
 
     public static void logMeIn(final Context context, final Map<String, String> stringMap) {
         if (stringMap != null) {
-            String url = "http://iotsswitch.atwebpages.com/login.php";
+            String url = "http://www.codeham.com/iot/login.php";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
@@ -228,24 +233,26 @@ public class NetworkUtils {
         if (key != null) {
             String finalResult;
 
-            String url = "http://iotsswitch.atwebpages.com/switchit.php";
+            String url = "http://www.codeham.com/iot/switchit.php";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
 
-                            Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+                            //Toast.makeText(context, response, Toast.LENGTH_LONG).show();
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
-                                String state = jsonObject.optString("status");
+                                String state = jsonObject.optString("connectivity");
                                 Log.i("NetworkUtils GetState", state);
 
-                                if (state.equals("1")) {
-                                    Toast.makeText(context, "HiGH Response", Toast.LENGTH_LONG).show();
-
-                                } else if (state.equals("0")) {
-                                    Toast.makeText(context, "LOW Response", Toast.LENGTH_LONG).show();
-
+                                if (state.equals("0")) {
+                                    Intent intent=new Intent(context, DeviceState.class);
+                                    intent.setAction(NetworkUtils.DEVICE_IS_ONLINE);
+                                    context.sendBroadcast(intent);
+                                } else if (state.equals("1")) {
+                                    Intent intent=new Intent(context, DeviceState.class);
+                                    intent.setAction(NetworkUtils.DEVICE_IS_NOT_ONLINE);
+                                    context.sendBroadcast(intent);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -283,11 +290,13 @@ public class NetworkUtils {
 
 
     public static void checkDeviceStatus(Context context) {
-        String url = "http://iotsswitch.atwebpages.com/update.php";
+        String url = "http://www.codeham.com/iot/update.php";
         final PrefManager prefManager = new PrefManager(context);
         StringRequest stringRequest = new StringRequest(Method.POST, url, new Listener<String>() {
             @Override
             public void onResponse(String response) {
+
+
 
             }
         }, new Response.ErrorListener() {
