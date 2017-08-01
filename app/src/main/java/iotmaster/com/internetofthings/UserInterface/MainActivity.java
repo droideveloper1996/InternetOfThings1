@@ -593,7 +593,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
     void getDeviceOnlineOffline() {
         int delay = 1000; // delay for 1 sec.
-        int period = 20000; // repeat every 20 sec.
+        int period = 5000; // repeat every 20 sec.
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
@@ -604,8 +604,8 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
     void getOnlineOffline() {
 
-        int delay = 1000; // delay for 1 sec.
-        int period = 10000; // repeat every 10 sec.
+        int delay = 0; // delay for 1 sec.
+        int period = 3000; // repeat every 10 sec.
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {

@@ -171,7 +171,7 @@ public class NetworkUtils {
                                 e.printStackTrace();
                             }
 
-                            Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+                       //     Toast.makeText(context, response, Toast.LENGTH_LONG).show();
 
 
                         }
@@ -179,7 +179,7 @@ public class NetworkUtils {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
+                         //   Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
                         }
                     }) {
                 @Override
@@ -214,7 +214,7 @@ public class NetworkUtils {
                         public void onResponse(String response) {
                             //TODO: Get Device response On Successful Initialization;
                             Log.i("SuccessMessage", response.toString());
-                            Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show();
+                         //   Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show();
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -263,7 +263,7 @@ public class NetworkUtils {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
+                         //   Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
                         }
                     }) {
                 @Override

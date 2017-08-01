@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import iotmaster.com.internetofthings.Fragments.StatsFragment.BarFragment;
-import iotmaster.com.internetofthings.Fragments.StatsFragment.CombineChart;
 import iotmaster.com.internetofthings.Fragments.StatsFragment.LineChart;
 import iotmaster.com.internetofthings.Fragments.StatsFragment.PieFragment;
 import iotmaster.com.internetofthings.R;
@@ -48,10 +47,8 @@ public class StatisticActivity extends AppCompatActivity {
                 case 0:
                     return new BarFragment();
                 case 1:
-                    return new CombineChart();
-                case 2:
                     return new LineChart();
-                case 3:
+                case 2:
                     return new PieFragment();
             }
             return null;
@@ -59,7 +56,7 @@ public class StatisticActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 4;
+            return 3;
         }
 
         @Override
@@ -67,11 +64,10 @@ public class StatisticActivity extends AppCompatActivity {
             switch (position) {
                 case 0:
                     return "Bar";
+
                 case 1:
-                    return "Chart";
-                case 2:
                     return "Line";
-                case 3:
+                case 2:
                     return "Pie";
             }
             return null;

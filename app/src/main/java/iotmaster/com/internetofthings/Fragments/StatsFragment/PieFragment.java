@@ -72,7 +72,7 @@ public class PieFragment extends Fragment {
         yvalues.add(new Entry(9f, 11));
 
 
-        PieDataSet dataSet = new PieDataSet(yvalues, "Election Results");
+        PieDataSet dataSet = new PieDataSet(yvalues, "Monthly Consumption");
 
         ArrayList<String> xVals = new ArrayList<String>();
 
@@ -100,7 +100,7 @@ public class PieFragment extends Fragment {
         pieChart.setDrawHoleEnabled(true);
         pieChart.setTransparentCircleRadius(58f);
 
-        data.setValueTextSize(15f);
+        data.setValueTextSize(14f);
         data.setValueTextColor(Color.DKGRAY);
 
         pieChart.setHoleRadius(25f);

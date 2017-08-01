@@ -43,7 +43,7 @@ public class BarFragment extends Fragment {
         arrayList.add(new BarEntry(10f, 4));
         arrayList.add(new BarEntry(44f, 5));
 
-        BarDataSet barDataSet = new BarDataSet(arrayList, "RainFall");
+        BarDataSet barDataSet = new BarDataSet(arrayList, "Daily Stats");
 
         ArrayList<String> month = new ArrayList<>();
         month.add("Jan");

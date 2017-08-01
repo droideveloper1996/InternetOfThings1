@@ -1,17 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:background="#222"
+              android:orientation="vertical"
+              android:padding="16dp">
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:id="@+id/addAlarm"
+        android:text="Click To Add Alarm"
+        android:textColor="#fff"/>
+
+
     <TextView
         android:layout_width="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_height="wrap_content"
-        android:text="Fragment 2"/>
-    <ImageView
-        android:layout_width="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:padding="5dp"
+        android:text="Repeat"
+        android:layout_marginTop="64dp"
+        android:textColor="#fff"/>
+
+    <GridLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/ic_add_circle_black_24dp"/>
-</RelativeLayout>
+        android:layout_gravity="center"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:foregroundGravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="0"
+            android:backgroundTint="#ffffff"
+            android:padding="8dp"
+            android:text="Mon"
+            android:textColor="#fff"
+            />
+
+        <CheckBox
+            android:layout_column="0"
+            android:layout_marginLeft="5dp"
+            android:layout_row="1"
+            android:buttonTint="#fff"
+
+            android:padding="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_row="0"
+            android:backgroundTint="#ffffff"
+
+            android:padding="8dp"
+            android:text="Tue"
+            android:textColor="#fff"
+            />
+
+        <CheckBox
+            android:layout_column="1"
+            android:layout_marginLeft="5dp"
+            android:layout_row="1"
+
+            android:buttonTint="#fff"
+            android:padding="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="2"
+            android:layout_row="0"
+            android:padding="8dp"
+
+            android:text="Wed"
+            android:textColor="#fff"
+            />
+
+        <CheckBox
+            android:layout_column="2"
+            android:layout_marginLeft="5dp"
+            android:layout_row="1"
+            android:buttonTint="#fff"
+
+            android:padding="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="3"
+            android:layout_row="0"
+            android:padding="8dp"
+
+            android:text="Thr"
+            android:textColor="#fff"
+            />
+
+        <CheckBox
+            android:layout_column="3"
+            android:layout_marginLeft="5dp"
+            android:layout_row="1"
+
+            android:buttonTint="#fff"
+            android:padding="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="4"
+            android:layout_row="0"
+            android:padding="8dp"
+
+            android:text="Fri"
+            android:textColor="#fff"
+            />
+
+        <CheckBox
+            android:layout_column="4"
+            android:layout_marginLeft="5dp"
+            android:layout_row="1"
+
+            android:buttonTint="#fff"
+            android:padding="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="5"
+            android:layout_row="0"
+            android:padding="8dp"
+
+            android:text="Sat"
+            android:textColor="#fff"
+            />
+
+        <CheckBox
+            android:layout_column="5"
+            android:layout_marginLeft="5dp"
+            android:layout_row="1"
+
+            android:buttonTint="#fff"
+            android:padding="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="6"
+            android:layout_row="0"
+            android:padding="8dp"
+            android:text="Sun"
+            android:textColor="#fff"
+            />
+
+        <CheckBox
+            android:layout_column="6"
+            android:layout_marginLeft="5dp"
+            android:layout_row="1"
+            android:buttonTint="#fff"
+            android:gravity="center"
+            android:padding="5dp"/>
+
+    </GridLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_alignParentBottom="true"
+            android:text="Save"
+            android:id="@+id/save_alarm"
+            android:layout_alignParentRight="true"
+            android:textColor="#ff954f"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:text="Cancel"
+            android:textColor="#ff954f"
+            android:textSize="16sp"/>
+    </RelativeLayout>
+</LinearLayout>

@@ -75,7 +75,9 @@
             android:parentActivityName=".UserInterface.MainActivity">
         </activity>
 
-        <receiver android:name=".Broadcasts.AlarmBroadCast"/>
+        <receiver android:name=".Broadcasts.AlarmBroadCast"
+            android:enabled="true"
+            />
 
         <activity
             android:name=".UserInterface.MyDevicesActivity"
@@ -142,6 +144,12 @@
             android:parentActivityName=".UserInterface.MainActivity"
             android:theme="@style/AppTheme">
         </activity>
+        <receiver android:name=".Broadcasts.RebootBroadcast"
+                  android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+            </receiver>
     </application>
 
 </manifest>

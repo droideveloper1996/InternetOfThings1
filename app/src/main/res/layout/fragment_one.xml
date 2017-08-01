@@ -5,9 +5,11 @@
               android:layout_height="match_parent">
     <TextView
         android:layout_width="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
-        android:text="Fragment 1"/>
+        android:textColor="#000"
+        android:textSize="16sp"
+        android:text="Alarm"/>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
