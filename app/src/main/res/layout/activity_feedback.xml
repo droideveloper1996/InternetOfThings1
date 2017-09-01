@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rate3"
+
+        android:orientation="vertical"
+        tools:context="iotmaster.com.internetofthings.UserInterface.FeedbackActivity">
+
+        <include
+            android:id="@+id/myToolbar"
+            layout="@layout/my_device_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="What do you think of our Product?"
+            android:textColor="#000"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:gravity="end"
+            android:paddingRight="16dp"
+            android:text="*Required"
+            android:textColor="#f32"
+            android:textSize="12sp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#f2f2f2"
+            />
+
+        <RatingBar
+            android:id="@+id/rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+
+            android:numStars="5"
+            android:rating="1"
+            android:stepSize="0.5"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="What you would like to share with us?"
+            android:textColor="#000"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:gravity="end"
+            android:paddingRight="16dp"
+            android:text="*Required"
+            android:textColor="#f32"
+            android:textSize="12sp"
+            android:textStyle="bold"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#f2f2f2"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/edittext_stye"
+            android:gravity="top|left"
+            android:hint="Your words Here"
+            android:lines="6"
+            android:padding="5dp"
+            android:layout_marginStart="9dp"
+            android:textColor="#FFF"
+            android:textColorHint="#FFF"
+            android:textSize="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="How likely would you recommend deX to your friend and colleagues?"
+            android:textColor="#FFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/edittext_stye"
+                android:padding="12dp"
+
+                android:text="Submit"
+                android:textColor="#fff"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+</ScrollView>

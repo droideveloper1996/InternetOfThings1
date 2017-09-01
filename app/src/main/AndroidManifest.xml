@@ -62,22 +62,18 @@
         <activity android:name=".UserInterface.SetupActivity">
         </activity>
 
-        <service
-            android:name=".BackgroundServices.FirebaseJobService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
-            </intent-filter>
-        </service>
-
         <activity
             android:name=".UserInterface.AlarmActivity"
             android:parentActivityName=".UserInterface.MainActivity">
         </activity>
 
-        <receiver android:name=".Broadcasts.AlarmBroadCast"
-            android:enabled="true"
-            />
+        <receiver
+            android:name=".Broadcasts.AlarmBroadCast"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="iotmaster.com.internetofthings.POSITIVE"/>
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".UserInterface.MyDevicesActivity"
@@ -116,7 +112,7 @@
                 <action android:name="iotmaster.com.internetofthings.POSITIVE"/>
                 <action android:name="iotmaster.com.internetofthings.NEGATIVE"/>
                 <action android:name="iotmaster.com.internetofthings.online"/>
-                <action android:name="iotmaster.com.internetofthings.online"/>
+                <action android:name="iotmaster.com.internetofthings.offline"/>
             </intent-filter>
         </receiver>
 
@@ -133,9 +129,8 @@
 
         <activity
             android:name=".UserInterface.SplashActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_splash"
-            android:parentActivityName=".UserInterface.MainActivity"
+            android:noHistory="true"
             android:theme="@style/FullscreenTheme">
         </activity>
         <activity
@@ -144,12 +139,43 @@
             android:parentActivityName=".UserInterface.MainActivity"
             android:theme="@style/AppTheme">
         </activity>
-        <receiver android:name=".Broadcasts.RebootBroadcast"
-                  android:enabled="true">
+
+        <receiver
+            android:name=".Broadcasts.RebootBroadcast"
+            android:enabled="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
-            </receiver>
+        </receiver>
+
+        <provider
+            android:name=".data.AlarmProvider"
+            android:authorities="iotmaster.com.internetofthings.ALARM"
+            android:exported="false"/>
+
+        <receiver android:name=".DeviceWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/device_widget_provider_info"/>
+        </receiver>
+
+        <activity
+            android:name=".UserInterface.FeedbackActivity"
+            android:parentActivityName=".UserInterface.MainActivity">
+        </activity>
+
+        <service android:name=".BackgroundServices.WidgetBackground"/>
+
+        <activity
+            android:name=".UserInterface.SecurityActivity"
+            android:parentActivityName=".UserInterface.MainActivity">
+        </activity>
+        <activity android:name=".UserInterface.TemperatureActivity">
+        </activity>
     </application>
 
 </manifest>

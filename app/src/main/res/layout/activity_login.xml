@@ -1,43 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2e3237"
+    android:background="@drawable/login_blur"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context="iotmaster.com.internetofthings.UserInterface.LoginActivity">
 
     <ImageView
-        android:layout_width="120dp"
-        android:layout_height="130dp"
+        android:id="@+id/bulb_image"
+        android:layout_width="110dp"
+        android:layout_height="120dp"
         android:layout_gravity="center"
         android:layout_marginBottom="32dp"
         android:layout_marginTop="32dp"
         android:alpha="0"
-        android:id="@+id/bulb_image"
         android:src="@drawable/bulb2"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:text="Welcome"
+        android:textColor="#f3f3f3"
+        android:textSize="48sp"/>
+
 
     <EditText
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/edit_text_bg"
-        android:hint="Email"
+        android:background="@drawable/edittext_stye"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:hint="Email Address"
         android:inputType="textEmailAddress"
-        android:padding="10dp"
-        />
+        android:padding="12dp"
+        android:textColor="#fff"
+        android:textColorHint="#fff"/>
 
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@drawable/edit_text_bg"
+        android:background="@drawable/edittext_stye"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
         android:hint="Password"
         android:inputType="textPassword"
-        android:padding="10dp"/>
+        android:padding="12dp"
+        android:textColor="#fff"
+        android:textColorHint="#fff"/>
 
     <Button
         android:id="@+id/login"
@@ -48,13 +73,39 @@
         android:background="@drawable/btn_shape"
         android:text="Login"/>
 
-    <TextView
-        android:id="@+id/notRegistered"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:text="Not a member? Sign up now"
-        android:textColor="#d3d3d3"
-        android:textSize="14sp"/>
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5sp"
+            android:text="Password"
+            android:textColor="#FFF"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="|"
+            android:textColor="#fff"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/notRegistered"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:text="Register"
+            android:textColor="#FFF"
+            android:textSize="15sp"/>
+    </LinearLayout>
+
 </LinearLayout>
+</ScrollView>

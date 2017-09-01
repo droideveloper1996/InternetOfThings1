@@ -112,7 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@drawable/btn_shape"
-            android:text="Register Product"/>
+            android:text="Reset Device"/>
 
 
     </RelativeLayout>

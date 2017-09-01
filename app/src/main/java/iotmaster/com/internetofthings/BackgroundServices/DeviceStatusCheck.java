@@ -1,26 +1,13 @@
 package iotmaster.com.internetofthings.BackgroundServices;
 
 
-import android.content.Context;
-
-import com.firebase.jobdispatcher.Constraint;
-import com.firebase.jobdispatcher.Driver;
-import com.firebase.jobdispatcher.FirebaseJobDispatcher;
-import com.firebase.jobdispatcher.GooglePlayDriver;
-import com.firebase.jobdispatcher.Job;
-import com.firebase.jobdispatcher.Lifetime;
-import com.firebase.jobdispatcher.RetryStrategy;
-import com.firebase.jobdispatcher.Trigger;
-
-import java.util.concurrent.TimeUnit;
-
 /**
  * Created by Abhishek on 08/07/2017.
  */
 
 public class DeviceStatusCheck {
 
-    int REMINDER_TIME_INTERVAL=15;
+   /* int REMINDER_TIME_INTERVAL=15;
     int REMINDER_TIME_SECONDS= (int) TimeUnit.MINUTES.toSeconds(REMINDER_TIME_INTERVAL);
     public static final String JOB_TAG="check_device_status";
 
@@ -58,5 +45,5 @@ public class DeviceStatusCheck {
                 .build();
         dispatcher.schedule(myJob);
         sInitialized=true;
-    }
+    }*/
 }

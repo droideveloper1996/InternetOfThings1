@@ -4,7 +4,7 @@
 
     <group
         android:id="@+id/topMenu"
-        android:checkableBehavior="single">
+     >
         <item
             android:id="@+id/action_my_device"
             android:title="My Devices"
@@ -12,15 +12,9 @@
             android:icon="@drawable/ic_important_devices_black_24px"
             />
         <item
-            android:id="@+id/action_stat"
-            android:title="Statistics"
-            android:icon="@drawable/stat"
-            app:showAsAction="never"
-            />
-        <item
-            android:id="@+id/action_alarm"
-            android:title="Timer"
-            android:icon="@drawable/ic_access_alarms_black_24px"
+            android:id="@+id/action_security"
+            android:title="Security"
+            android:icon="@drawable/shield"
             app:showAsAction="never"
             />
 
@@ -30,6 +24,27 @@
             android:icon="@drawable/ic_location_on_black_24px"
             app:showAsAction="never"
             />
+        <item
+            android:id="@+id/action_stat"
+            android:title="Statistics"
+            android:icon="@drawable/stat"
+            app:showAsAction="never"
+            />
+
+        <item
+            android:id="@+id/action_temperature"
+            android:title="Temperature"
+            android:icon="@drawable/ic_thermo"
+            app:showAsAction="never"
+            />
+        <item
+            android:id="@+id/action_alarm"
+            android:title="Timer"
+            android:icon="@drawable/ic_access_alarms_black_24px"
+            app:showAsAction="never"
+            />
+
+
 
         <item
             android:id="@+id/action_addProduct"
@@ -38,11 +53,25 @@
             app:showAsAction="never"/>
     </group>
 
+<group
+    android:id="@+id/bottomMenu"
 
+    >
+
+
+    <item
+        android:id="@+id/action_rating"
+        android:title="Feedback"
+        android:icon="@drawable/feedback"
+        app:showAsAction="never"/>
     <item
         android:id="@+id/action_reset"
         android:title="Reset Device"
         app:showAsAction="never"
         />
+
+
+</group>
+
 
 </menu>

@@ -8,9 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-import iotmaster.com.internetofthings.Fragments.fragment_four;
 import iotmaster.com.internetofthings.Fragments.fragment_one;
-import iotmaster.com.internetofthings.Fragments.fragment_three;
 import iotmaster.com.internetofthings.Fragments.fragment_two;
 import iotmaster.com.internetofthings.R;
 
@@ -44,10 +42,9 @@ public class AlarmActivity extends AppCompatActivity {
         setupTabIcons();
     }
     private void setupTabIcons() {
-        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
-        tabLayout.getTabAt(3).setIcon(tabIcons[3]);
+        tabLayout.getTabAt(0).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[0]);
+
 
     }
 
@@ -64,30 +61,24 @@ public class AlarmActivity extends AppCompatActivity {
                     return new fragment_one();
                 case 1:
                     return new fragment_two();
-                case 2:
-                    return new fragment_three();
-                case 3:
-                    return new fragment_four();
+
             }
             return null;
         }
 
         @Override
         public int getCount() {
-            return 4;
+            return 2;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Add";
+                    return "My Alarm";
                 case 1:
-                    return "Two";
-                case 2:
-                    return "Three";
-                case 3:
-                    return "Delete";
+                    return "Add Alarm";
+
             }
             return null;
         }

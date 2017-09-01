@@ -54,7 +54,7 @@ public class DeviceAdapter extends CursorAdapter {
 
         int relay55 = cursor.getInt(relay5);
 
-        imageView.setImageResource(R.drawable.ic_power);
+        imageView.setImageResource(R.drawable.plug_socket);
         switchName.setText(name);
         switchStatus.setText(key);
 

@@ -53,6 +53,9 @@ public class PrefManager {
     public String getKey() {
         return pref.getString(DEVICE_UNIQUE_KEY, "null");
     }
+    public String getUserEmail() {
+        return pref.getString(USERNAME, "null");
+    }
 
     public void loginSuccessful(String username, Boolean response) {
         if (username != null && username != "") {
@@ -74,5 +77,7 @@ public class PrefManager {
             editor.commit();
         }
     }
+
+
 
 }

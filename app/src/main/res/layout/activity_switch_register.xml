@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2e3237"
+    android:background="@drawable/sunset"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context="iotmaster.com.internetofthings.UserInterface.SwitchRegisterActivity">
@@ -16,8 +16,11 @@
         android:layout_gravity="center"
         android:layout_marginTop="25dp"
         android:text="Enter Details"
-        android:textColor="#f8f8f8"
-        android:textSize="18sp"/>
+        android:textColor="#FFF"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-smallcaps"
+        android:textColorHint="#FFF"
+        android:textSize="28sp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -31,9 +34,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@drawable/edit_text_bg"
+        android:background="@drawable/edittext_stye"
+        android:fontFamily="sans-serif-condensed"
         android:hint="Key Here..."
-        android:padding="10dp"/>
+        android:padding="12dp"
+        android:gravity="center"
+        android:textColorHint="#FFF"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -47,9 +53,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@drawable/edit_text_bg"
+        android:background="@drawable/edittext_stye"
+        android:fontFamily="sans-serif-condensed"
         android:hint="eg. Living Room Switch"
-        android:padding="10dp"/>
+        android:padding="12dp"
+        android:gravity="center"
+        android:textColor="#FFF"
+        android:textColorHint="#FFF"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -16,12 +15,12 @@ import android.speech.RecognizerIntent;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -43,6 +42,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
     public static final String SAVED_STATE_KEY = "saved-state";
     ProgressBar progressBar;
     TextView ProgresText;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -108,8 +109,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
         // DeviceStatusCheck.checkStatus(this);
         getOnlineOffline();
         getDeviceOnlineOffline();
-
-
+        sendRegistrationToServer();
         Boolean fromSetupActivity = getIntent().getBooleanExtra("fromSetupActivity", false);
         if (fromSetupActivity) {
             dialogueBuilder();
@@ -147,6 +147,9 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+
 
 
         /**
@@ -228,8 +231,17 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
                         startActivity(new Intent(mContext, MyDevicesActivity.class));
                         break;
                     case R.id.action_stat:
-                        startActivity(new Intent(mContext,StatisticActivity.class));
-
+                        startActivity(new Intent(mContext, StatisticActivity.class));
+                        break;
+                    case R.id.action_rating:
+                        startActivity(new Intent(mContext, FeedbackActivity.class));
+                        break;
+                    case R.id.action_security:
+                        startActivity(new Intent(mContext,SecurityActivity.class));
+                        break;
+                    case R.id.action_temperature:
+                        startActivity(new Intent(mContext,TemperatureActivity.class));
+                        break;
                 }
                 mDrawerLayout.closeDrawers();
                 return true;
@@ -238,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
         // NotificationUtils.GeoNotification(this);
 
-
+/*
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -261,10 +273,12 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
                     // txtMessage.setText(message);
                 }
             }
-        };
+        };*/
 
         displayFirebaseRegId();
-        FirebaseMessaging.getInstance().subscribeToTopic("news");
+        FirebaseMessaging.getInstance().subscribeToTopic("global");
+      //  FirebaseMessaging.getInstance().subscribeToTopic("connection");
+        unPlug();
     }
 
     private void displayFirebaseRegId() {
@@ -424,12 +438,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
         outState.putBoolean(SAVED_STATE_KEY, isSwitched);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
 
-
-    }
 
     public static void getState(Boolean check) {
         if (check) {
@@ -452,23 +461,12 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
     @Override
     protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+
+
         super.onPause();
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                new IntentFilter(Config.REGISTRATION_COMPLETE));
-
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                new IntentFilter(Config.PUSH_NOTIFICATION));
-
-
-    }
 
     void dialogueBuilder() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
@@ -575,9 +573,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
         alertDialog.setMessage("Are you sure want to exit");
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-
-                finish();
-                moveTaskToBack(true);
+               finish();
             }
         });
         alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -592,24 +588,48 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
     //cs56zlTPOnY:APA91bHCi4mauCKVU0cfu0gpXxRXnHAOalKNiNz0mBaP8NeUNsrUibS829VwCJ18y0vomMom5ySssKlFAU5zSZCB_ONbAE_YRsGo5eu8AACVsjNZSXaIeYU1K6c1MYBtkSUqK24Pc5wO
 
     void getDeviceOnlineOffline() {
-        int delay = 1000; // delay for 1 sec.
-        int period = 5000; // repeat every 20 sec.
+
+       /* int delay = 1000; // delay for 1 sec.
+        int period = 2000; // repeat every 20 sec.
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 NetworkUtils.checkDeviceStatus(mContext);
             }
-        }, delay, period);
+        }, delay, period);*/
     }
 
     void getOnlineOffline() {
 
-        int delay = 0; // delay for 1 sec.
-        int period = 3000; // repeat every 10 sec.
+       /* int delay = 0; // delay for 1 sec.
+        int period = 10000; // repeat every 10 sec.
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 NetworkUtils.getState(Key, mContext);
+            }
+        }, delay, period);*/
+    }
+
+    private  void sendRegistrationToServer() {
+
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        String refreshedToken = sharedPreferences.getString("fcm_token", "null");
+        NetworkUtils.sendTokenToserver(MainActivity.this, refreshedToken);
+
+    }
+
+    void unPlug()
+    {
+        int delay = 1*60*3*1000; // delay for 1 sec.
+        int period = 3*60*1000; // repeat every 180 sec.
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                Intent intent = new Intent(MainActivity.this, DeviceState.class);
+                intent.setAction(NetworkUtils.DEVICE_IS_NOT_ONLINE);
+                sendBroadcast(intent);
             }
         }, delay, period);
     }

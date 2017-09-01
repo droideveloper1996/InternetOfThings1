@@ -5,7 +5,9 @@ package iotmaster.com.internetofthings.FireBaseCloudMessaging;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -15,7 +17,9 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import iotmaster.com.internetofthings.Network.NetworkUtils;
 import iotmaster.com.internetofthings.UserInterface.MainActivity;
+import iotmaster.com.internetofthings.UserInterface.MainActivity.DeviceState;
 import iotmaster.com.internetofthings.UserInterface.NotificationUtils;
 
 
@@ -61,7 +65,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // play notification sound
             NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
             notificationUtils.playNotificationSound();
-        }else{
+        } else {
             // If the app is in background, firebase itself handles the notification
         }
     }
@@ -72,12 +76,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         try {
             JSONObject data = json.getJSONObject("data");
 
-            String title = data.getString("title");
-            String message = data.getString("message");
-            boolean isBackground = data.getBoolean("is_background");
-            String imageUrl = data.getString("image");
-            String timestamp = data.getString("timestamp");
-            JSONObject payload = data.getJSONObject("payload");
+            String title = data.optString("title");
+            String message = data.optString("message");
+            boolean isBackground = data.optBoolean("is_background");
+            String imageUrl = data.optString("image");
+            String timestamp = data.optString("timestamp");
+            JSONObject payload = data.optJSONObject("payload");
+            String connectivity = data.optString("connectivity");
+            String security = data.optString("security");
+
 
             Log.e(TAG, "title: " + title);
             Log.e(TAG, "message: " + message);
@@ -85,17 +92,38 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.e(TAG, "payload: " + payload.toString());
             Log.e(TAG, "imageUrl: " + imageUrl);
             Log.e(TAG, "timestamp: " + timestamp);
+            Log.e(TAG, "connectivity " + connectivity);
+            Log.e(TAG, "security " + security);
 
 
+
+            SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            Boolean currentState = sharedpreferences.getBoolean("state", false);
+            if (currentState) {
+                if (security.equals("1")) {
+                    // play notification sound
+                    NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
+                    notificationUtils.playNotificationSound();
+                }
+            }
             if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
-                // app is in foreground, broadcast the push message
-                Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
-                pushNotification.putExtra("message", message);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
 
-                // play notification sound
-                NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
-                notificationUtils.playNotificationSound();
+                if (connectivity.equals("1")) {
+                    Intent intent = new Intent(MyFirebaseMessagingService.this, DeviceState.class);
+                    intent.setAction(NetworkUtils.DEVICE_IS_ONLINE);
+                    this.sendBroadcast(intent);
+
+                } else if (connectivity.equals("0")) {
+                    Intent intent = new Intent(MyFirebaseMessagingService.this, DeviceState.class);
+                    intent.setAction(NetworkUtils.DEVICE_IS_NOT_ONLINE);
+                    this.sendBroadcast(intent);
+                }
+                // app is in foreground, broadcast the push message
+               /* Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
+                pushNotification.putExtra("message", message);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);*/
+
+
             } else {
                 // app is in background, show the notification in notification tray
                 Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);

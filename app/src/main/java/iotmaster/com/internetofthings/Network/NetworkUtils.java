@@ -40,8 +40,8 @@ public class NetworkUtils {
 
     public static final String TAG = "NetworkUtils.class";
 
-    public static final String DEVICE_IS_ONLINE="iotmaster.com.internetofthings.online";
-    public static final String DEVICE_IS_NOT_ONLINE="iotmaster.com.internetofthings.offline";
+    public static final String DEVICE_IS_ONLINE = "iotmaster.com.internetofthings.online";
+    public static final String DEVICE_IS_NOT_ONLINE = "iotmaster.com.internetofthings.offline";
 
 
     public NetworkUtils(Context context) {
@@ -171,7 +171,7 @@ public class NetworkUtils {
                                 e.printStackTrace();
                             }
 
-                       //     Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+                            //     Toast.makeText(context, response, Toast.LENGTH_LONG).show();
 
 
                         }
@@ -179,7 +179,7 @@ public class NetworkUtils {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                         //   Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
+                            //   Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
                         }
                     }) {
                 @Override
@@ -214,7 +214,7 @@ public class NetworkUtils {
                         public void onResponse(String response) {
                             //TODO: Get Device response On Successful Initialization;
                             Log.i("SuccessMessage", response.toString());
-                         //   Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show();
+                            //   Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show();
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -246,11 +246,11 @@ public class NetworkUtils {
                                 Log.i("NetworkUtils GetState", state);
 
                                 if (state.equals("0")) {
-                                    Intent intent=new Intent(context, DeviceState.class);
+                                    Intent intent = new Intent(context, DeviceState.class);
                                     intent.setAction(NetworkUtils.DEVICE_IS_ONLINE);
                                     context.sendBroadcast(intent);
                                 } else if (state.equals("1")) {
-                                    Intent intent=new Intent(context, DeviceState.class);
+                                    Intent intent = new Intent(context, DeviceState.class);
                                     intent.setAction(NetworkUtils.DEVICE_IS_NOT_ONLINE);
                                     context.sendBroadcast(intent);
                                 }
@@ -263,7 +263,7 @@ public class NetworkUtils {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                         //   Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
+                            //   Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
                         }
                     }) {
                 @Override
@@ -297,7 +297,6 @@ public class NetworkUtils {
             public void onResponse(String response) {
 
 
-
             }
         }, new Response.ErrorListener() {
 
@@ -328,4 +327,40 @@ public class NetworkUtils {
         return uri;
 
     }
+
+    public static void sendTokenToserver(final Context context, final String token) {
+        String url = "http://www.codeham.com/iot/firebase.php";
+        PrefManager prefManager = new PrefManager(context);
+        final String email = prefManager.getUserEmail();
+        StringRequest stringRequest = new StringRequest(Method.POST, url, new Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.getMessage().toString(), Toast.LENGTH_LONG).show();
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> map = new HashMap<>();
+
+                map.put("token", token);
+                map.put("email", email);
+                return map;
+
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+
+    }
+
 }

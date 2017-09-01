@@ -8,11 +8,11 @@
         app:showAsAction="never"
         />
     <item
-        android:orderInCategory="100"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_mic_white_24px"
-        android:title="Voice Action"
         android:id="@+id/action_voice"
+        android:icon="@drawable/ic_mic_white_24px"
+        android:orderInCategory="100"
+        android:title="Voice Action"
+        app:showAsAction="always"
         />
-    
+
 </menu>

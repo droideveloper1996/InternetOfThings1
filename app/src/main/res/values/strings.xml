@@ -47,5 +47,12 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">deX\nHome Automation</string>
     <string name="title_activity_statistic">StatisticActivity</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+
+
+    <string name="banner_ad_unit_id">ca-app-pub-1768179067190385/7700343279</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-1768179067190385/1581479876</string>
+    <string name="banner2_ad_unit_id">ca-app-pub-1768179067190385/8075925405</string>
 
 </resources>

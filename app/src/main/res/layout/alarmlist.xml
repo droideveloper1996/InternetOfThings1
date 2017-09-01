@@ -38,6 +38,7 @@
     <Switch
         android:layout_width="48dp"
         android:layout_height="24dp"
+        android:id="@+id/timeSwitch"
         android:background="@drawable/toggle_selector"
         android:layout_alignParentRight="true"
         android:layout_marginTop="8dp"/>

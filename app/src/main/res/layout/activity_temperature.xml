@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/temperature_bg">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="iotmaster.com.internetofthings.UserInterface.TemperatureActivity">
+
+
+        <include
+            layout="@layout/my_device_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            card_view:cardBackgroundColor="@android:color/transparent"
+            card_view:cardElevation="15dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/image_temperature"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="22dp"
+                    android:src="@drawable/ic_thermometer1"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center"
+                    android:text="22 &#x2103;"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="56sp"
+                    android:id="@+id/temperature"
+                    android:textStyle="bold"/>
+
+
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            card_view:cardBackgroundColor="@android:color/transparent"
+            card_view:cardElevation="15dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="22dp"
+                    android:src="@drawable/humidity"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center"
+                    android:text="77 %"
+                    android:id="@+id/humidity"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="56sp"
+                    android:textStyle="bold"/>
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="bottom"
+            android:textAlignment="center"
+            android:text="*Available on selected devices only"
+            android:textColor="#f8f8f8"
+            android:textSize="11sp"
+            android:textStyle="italic"/>
+
+
+    </LinearLayout>
+</ScrollView>
